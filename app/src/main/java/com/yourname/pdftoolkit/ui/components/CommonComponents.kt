@@ -2,6 +2,7 @@ package com.yourname.pdftoolkit.ui.components
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -12,11 +13,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.yourname.pdftoolkit.R
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 
@@ -319,6 +323,49 @@ fun FileItemCard(
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
+        }
+    }
+}
+
+/**
+ * A horizontally scrolling row of chips that fades out at whichever edge has more content,
+ * so it is obvious there is something to scroll to.
+ */
+@Composable
+fun FadingEdgeRow(
+    modifier: Modifier = Modifier,
+    fadeColor: Color = MaterialTheme.colorScheme.surfaceVariant,
+    fadeWidth: Dp = 28.dp,
+    content: androidx.compose.foundation.lazy.LazyListScope.() -> Unit
+) {
+    val state = androidx.compose.foundation.lazy.rememberLazyListState()
+
+    Box(modifier = modifier.fillMaxWidth()) {
+        androidx.compose.foundation.lazy.LazyRow(
+            state = state,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.fillMaxWidth(),
+            content = content
+        )
+
+        if (state.canScrollBackward) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
+                    .fillMaxHeight()
+                    .width(fadeWidth)
+                    .background(Brush.horizontalGradient(listOf(fadeColor, Color.Transparent)))
+            )
+        }
+
+        if (state.canScrollForward) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .fillMaxHeight()
+                    .width(fadeWidth)
+                    .background(Brush.horizontalGradient(listOf(Color.Transparent, fadeColor)))
+            )
         }
     }
 }

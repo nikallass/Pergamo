@@ -47,6 +47,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
 import com.yourname.pdftoolkit.domain.operations.*
+import com.yourname.pdftoolkit.ui.components.FadingEdgeRow
+import com.yourname.pdftoolkit.ui.components.SaveLocationSelector
+import com.yourname.pdftoolkit.ui.components.ScanPreviewCard
 import com.yourname.pdftoolkit.util.CropHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -84,20 +87,47 @@ class ScanToPdfViewModel : ViewModel() {
         _state.value = _state.value.copy(pageSize = size)
     }
     
-    fun setColorMode(mode: ScanColorMode) {
-        _state.value = _state.value.copy(colorMode = mode)
+    /**
+     * Store the settings the user just changed in the preview: for every page while
+     * "apply to all" is on, otherwise only for the page they are looking at.
+     */
+    fun setAdjustments(uri: Uri, adjustments: ScanAdjustments) {
+        val state = _state.value
+        _state.value = if (state.applyToAll) {
+            state.copy(adjustments = adjustments, perPageAdjustments = emptyMap())
+        } else {
+            state.copy(perPageAdjustments = state.perPageAdjustments + (uri to adjustments))
+        }
+    }
+    
+    fun setApplyToAll(applyToAll: Boolean) {
+        val state = _state.value
+        _state.value = state.copy(
+            applyToAll = applyToAll,
+            // Turning it back on makes the current page's settings the ones for all pages.
+            perPageAdjustments = if (applyToAll) emptyMap() else state.perPageAdjustments
+        )
     }
     
     fun setQuality(quality: ScanQuality) {
         _state.value = _state.value.copy(quality = quality)
     }
     
-    fun toggleEnhanceContrast() {
-        _state.value = _state.value.copy(enhanceContrast = !_state.value.enhanceContrast)
+    fun setFileName(name: String) {
+        _state.value = _state.value.copy(fileName = name)
     }
     
     fun setShowCamera(show: Boolean) {
         _state.value = _state.value.copy(showCamera = show)
+    }
+    
+    /** Move a page one step towards the front or the back of the document. */
+    fun moveImage(index: Int, offset: Int) {
+        val images = _state.value.selectedImages.toMutableList()
+        val target = index + offset
+        if (index !in images.indices || target !in images.indices) return
+        images.add(target, images.removeAt(index))
+        _state.value = _state.value.copy(selectedImages = images)
     }
     
     fun replaceImage(index: Int, newUri: Uri) {
@@ -108,9 +138,50 @@ class ScanToPdfViewModel : ViewModel() {
         }
     }
     
-    fun createPdf(
+    /** Build the PDF at a location the user picked in the system dialog. */
+    fun createPdf(context: android.content.Context, outputUri: Uri) {
+        buildPdf(context) { scanner, config, perPage, onProgress ->
+            scanner.imagesToPdf(
+                imageUris = _state.value.selectedImages,
+                outputUri = outputUri,
+                config = config,
+                perPageAdjustments = perPage,
+                progressCallback = onProgress
+            )
+        }
+    }
+    
+    /** Build the PDF straight into the app's output folder, without a file dialog. */
+    fun createPdfInDefaultFolder(context: android.content.Context) {
+        buildPdf(context) { scanner, config, perPage, onProgress ->
+            val output = com.yourname.pdftoolkit.util.OutputFolderManager
+                .createOutputStream(context, _state.value.outputFileName())
+                ?: return@buildPdf ScanToPdfResult(
+                    success = false,
+                    pagesScanned = 0,
+                    errorMessage = "Cannot create output file"
+                )
+            
+            output.outputStream.use { stream ->
+                scanner.imagesToPdf(
+                    imageUris = _state.value.selectedImages,
+                    outputStream = stream,
+                    config = config,
+                    perPageAdjustments = perPage,
+                    progressCallback = onProgress
+                ).copy(outputUri = output.outputFile.contentUri)
+            }
+        }
+    }
+    
+    private fun buildPdf(
         context: android.content.Context,
-        outputUri: Uri
+        save: suspend (
+            scanner: PdfScanner,
+            config: ScanConfig,
+            perPageAdjustments: List<ScanAdjustments>,
+            onProgress: (Int) -> Unit
+        ) -> ScanToPdfResult
     ) {
         if (_state.value.selectedImages.isEmpty()) return
         
@@ -121,21 +192,20 @@ class ScanToPdfViewModel : ViewModel() {
             val scanner = PdfScanner(context)
             val config = ScanConfig(
                 pageSize = _state.value.pageSize,
-                colorMode = _state.value.colorMode,
                 quality = _state.value.quality,
-                enhanceContrast = _state.value.enhanceContrast
+                adjustments = _state.value.adjustments
             )
             
-            val result = scanner.imagesToPdf(
-                imageUris = _state.value.selectedImages,
-                outputUri = outputUri,
-                config = config,
-                progressCallback = { progress ->
-                    _state.value = _state.value.copy(progress = progress)
-                }
-            )
+            val result = save(
+                scanner,
+                config,
+                _state.value.selectedImages.map { _state.value.adjustmentsFor(it) }
+            ) { progress ->
+                _state.value = _state.value.copy(progress = progress)
+            }
+            val outputUri = result.outputUri
             
-            if (result.success) {
+            if (result.success && outputUri != null) {
                 com.yourname.pdftoolkit.data.SafUriManager.addRecentFile(context, outputUri)
                 
                 // Record in history
@@ -144,7 +214,7 @@ class ScanToPdfViewModel : ViewModel() {
                     operationType = com.yourname.pdftoolkit.data.OperationType.SCAN_TO_PDF,
                     inputFileName = "${_state.value.selectedImages.size} images",
                     outputFileUri = outputUri,
-                    outputFileName = "scanned.pdf",
+                    outputFileName = _state.value.outputFileName(),
                     details = "Scanned ${result.pagesScanned} pages to PDF"
                 )
             } else {
@@ -176,16 +246,38 @@ data class ScanToPdfUiState(
     val selectedImages: List<Uri> = emptyList(),
     val showCamera: Boolean = false,
     val pageSize: ScanPageSize = ScanPageSize.A4,
-    val colorMode: ScanColorMode = ScanColorMode.COLOR,
     val quality: ScanQuality = ScanQuality.MEDIUM,
-    val enhanceContrast: Boolean = true,
+    /** Name of the document being built; the user can edit it before saving. */
+    val fileName: String = defaultScanFileName(),
+    /** Settings for every page without an entry in [perPageAdjustments]. */
+    val adjustments: ScanAdjustments = ScanAdjustments(),
+    val perPageAdjustments: Map<Uri, ScanAdjustments> = emptyMap(),
+    val applyToAll: Boolean = true,
     val isProcessing: Boolean = false,
     val progress: Int = 0,
     val isComplete: Boolean = false,
     val error: String? = null,
     val pagesScanned: Int = 0,
     val resultUri: Uri? = null
-)
+) {
+    fun adjustmentsFor(uri: Uri): ScanAdjustments = perPageAdjustments[uri] ?: adjustments
+
+    /** The file name, made safe to write: no path separators, always a .pdf. */
+    fun outputFileName(): String {
+        val cleaned = fileName
+            .replace(Regex("""[\\/:*?"<>|]"""), "_")
+            .trim()
+            .ifBlank { defaultScanFileName() }
+        return if (cleaned.endsWith(".pdf", ignoreCase = true)) cleaned else "$cleaned.pdf"
+    }
+}
+
+/** Default document name, e.g. `260830_141205_pdf_toolkit.pdf`. */
+private fun defaultScanFileName(): String {
+    val stamp = java.text.SimpleDateFormat("yyMMdd_HHmmss", java.util.Locale.US)
+        .format(java.util.Date())
+    return "${stamp}_pdf_toolkit.pdf"
+}
 
 /**
  * Scan to PDF Screen - Capture photos and convert to PDF.
@@ -231,6 +323,9 @@ fun ScanToPdfScreen(
     // Crop state
     var cropImageIndex by remember { mutableStateOf(-1) }
     
+    // Where the finished PDF goes: the app's folder, or a place the user picks
+    var useCustomLocation by remember { mutableStateOf(false) }
+    
     // Crop launcher
     val cropLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
@@ -250,6 +345,7 @@ fun ScanToPdfScreen(
                 viewModel.addImage(uri)
                 viewModel.setShowCamera(false)
             },
+            onOpenGallery = { imagePickerLauncher.safeLaunch(arrayOf("image/*"), context) },
             onClose = { viewModel.setShowCamera(false) }
         )
     } else {
@@ -352,6 +448,9 @@ fun ScanToPdfScreen(
                                 horizontalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
                                 items(state.selectedImages.size) { index ->
+                                  Column(
+                                      horizontalAlignment = Alignment.CenterHorizontally
+                                  ) {
                                     Box(
                                         modifier = Modifier
                                             .size(100.dp)
@@ -431,10 +530,60 @@ fun ScanToPdfScreen(
                                             )
                                         }
                                     }
+                                    
+                                    // Page order — matters as much for a stack of photos as
+                                    // for camera captures.
+                                    if (state.selectedImages.size > 1) {
+                                        Row(
+                                            horizontalArrangement = Arrangement.spacedBy(4.dp)
+                                        ) {
+                                            IconButton(
+                                                onClick = { viewModel.moveImage(index, -1) },
+                                                enabled = index > 0,
+                                                modifier = Modifier.size(28.dp)
+                                            ) {
+                                                Icon(
+                                                    Icons.Default.ChevronLeft,
+                                                    contentDescription = stringResource(R.string.scan_move_page_left),
+                                                    modifier = Modifier.size(18.dp)
+                                                )
+                                            }
+                                            IconButton(
+                                                onClick = { viewModel.moveImage(index, 1) },
+                                                enabled = index < state.selectedImages.lastIndex,
+                                                modifier = Modifier.size(28.dp)
+                                            ) {
+                                                Icon(
+                                                    Icons.Default.ChevronRight,
+                                                    contentDescription = stringResource(R.string.scan_move_page_right),
+                                                    modifier = Modifier.size(18.dp)
+                                                )
+                                            }
+                                        }
+                                    }
+                                  }
                                 }
                             }
                         }
                     }
+                }
+                
+                // Live preview of the first/selected page with the current settings
+                if (state.selectedImages.isNotEmpty()) {
+                    ScanPreviewCard(
+                        images = state.selectedImages,
+                        adjustmentsFor = { state.adjustmentsFor(it) },
+                        onAdjustmentsChange = { uri, adjustments ->
+                            viewModel.setAdjustments(uri, adjustments)
+                        },
+                        applyToAll = state.applyToAll,
+                        onApplyToAllChange = { viewModel.setApplyToAll(it) },
+                        pageAspectRatio = if (state.pageSize == ScanPageSize.FIT_IMAGE) {
+                            null
+                        } else {
+                            state.pageSize.rect.width / state.pageSize.rect.height
+                        }
+                    )
                 }
                 
                 // Scan Settings
@@ -456,7 +605,7 @@ fun ScanToPdfScreen(
                         
                         // Page Size
                         Text(stringResource(R.string.scan_page_size), style = MaterialTheme.typography.bodyMedium)
-                        LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        FadingEdgeRow {
                             items(ScanPageSize.entries) { size ->
                                 FilterChip(
                                     selected = state.pageSize == size,
@@ -466,21 +615,9 @@ fun ScanToPdfScreen(
                             }
                         }
                         
-                        // Color Mode
-                        Text(stringResource(R.string.scan_color_mode), style = MaterialTheme.typography.bodyMedium)
-                        LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            items(ScanColorMode.entries) { mode ->
-                                FilterChip(
-                                    selected = state.colorMode == mode,
-                                    onClick = { viewModel.setColorMode(mode) },
-                                    label = { Text(mode.name.replace("_", " ")) }
-                                )
-                            }
-                        }
-                        
                         // Quality
                         Text(stringResource(R.string.label_quality), style = MaterialTheme.typography.bodyMedium)
-                        LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        FadingEdgeRow {
                             items(ScanQuality.entries) { quality ->
                                 FilterChip(
                                     selected = state.quality == quality,
@@ -490,17 +627,6 @@ fun ScanToPdfScreen(
                             }
                         }
                         
-                        // Enhance Contrast
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(stringResource(R.string.scan_enhance_contrast), modifier = Modifier.weight(1f))
-                            Switch(
-                                checked = state.enhanceContrast,
-                                onCheckedChange = { viewModel.toggleEnhanceContrast() }
-                            )
-                        }
                     }
                 }
                 
@@ -574,6 +700,24 @@ fun ScanToPdfScreen(
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(stringResource(R.string.action_open_pdf))
                     }
+                    
+                    OutlinedButton(
+                        onClick = {
+                            scope.launch(Dispatchers.IO) {
+                                com.yourname.pdftoolkit.util.FileOpener.shareFile(
+                                    context = context,
+                                    uri = state.resultUri!!,
+                                    mimeType = "application/pdf",
+                                    title = state.outputFileName()
+                                )
+                            }
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Icon(Icons.Default.Share, contentDescription = null)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(stringResource(R.string.action_share))
+                    }
                 }
                 
                 // Error State
@@ -601,11 +745,35 @@ fun ScanToPdfScreen(
                 
                 Spacer(modifier = Modifier.height(16.dp))
                 
+                // File name and save location
+                if (state.selectedImages.isNotEmpty()) {
+                    OutlinedTextField(
+                        value = state.fileName,
+                        onValueChange = { viewModel.setFileName(it) },
+                        label = { Text(stringResource(R.string.scan_file_name)) },
+                        singleLine = true,
+                        trailingIcon = {
+                            Icon(Icons.Default.Edit, contentDescription = null)
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    
+                    SaveLocationSelector(
+                        useCustomLocation = useCustomLocation,
+                        onUseCustomLocationChange = { useCustomLocation = it }
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                }
+                
                 // Create PDF Button
                 Button(
                     onClick = {
-                        val fileName = "scanned_${System.currentTimeMillis()}.pdf"
-                        saveDocumentLauncher.safeLaunch(fileName, context)
+                        if (useCustomLocation) {
+                            saveDocumentLauncher.safeLaunch(state.outputFileName(), context)
+                        } else {
+                            viewModel.createPdfInDefaultFolder(context)
+                        }
                     },
                     modifier = Modifier.fillMaxWidth(),
                     enabled = state.selectedImages.isNotEmpty() && !state.isProcessing
@@ -637,6 +805,7 @@ fun ScanToPdfScreen(
 @Composable
 private fun CameraScreen(
     onImageCaptured: (Uri) -> Unit,
+    onOpenGallery: () -> Unit,
     onClose: () -> Unit
 ) {
     val context = LocalContext.current
@@ -690,12 +859,15 @@ private fun CameraScreen(
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Close button
+            // Gallery shortcut — pick shots that are already on the phone
             FloatingActionButton(
-                onClick = onClose,
+                onClick = onOpenGallery,
                 containerColor = MaterialTheme.colorScheme.surface
             ) {
-                Icon(Icons.Default.Close, contentDescription = stringResource(R.string.action_close))
+                Icon(
+                    Icons.Default.PhotoLibrary,
+                    contentDescription = stringResource(R.string.scan_gallery)
+                )
             }
             
             // Capture button
@@ -732,8 +904,13 @@ private fun CameraScreen(
                 )
             }
             
-            // Placeholder for symmetry
-            Spacer(modifier = Modifier.size(56.dp))
+            // Close button
+            FloatingActionButton(
+                onClick = onClose,
+                containerColor = MaterialTheme.colorScheme.surface
+            ) {
+                Icon(Icons.Default.Close, contentDescription = stringResource(R.string.action_close))
+            }
         }
     }
 }

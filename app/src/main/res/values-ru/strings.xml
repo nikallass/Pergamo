@@ -61,6 +61,18 @@
     <string name="category_quick_actions">Быстрые действия</string>
     <string name="category_image_tools">Инструменты для изображений</string>
     <string name="category_view_export">Просмотр и экспорт</string>
+    <string name="category_favorites">Избранное</string>
+    <string name="category_recent">Недавние</string>
+    <string name="category_create">Создать PDF</string>
+    <string name="category_document">Документ</string>
+    <string name="category_export">Экспорт и текст</string>
+    <string name="category_view">Просмотр</string>
+    <string name="category_protect">Защита и подпись</string>
+    <string name="category_hidden">Скрытые (%1$d)</string>
+    <string name="tool_menu_favorite_add">В избранное</string>
+    <string name="tool_menu_favorite_remove">Убрать из избранного</string>
+    <string name="tool_menu_hide">Скрыть</string>
+    <string name="tool_menu_unhide">Показать снова</string>
 
     <!-- Tool Names - Organize -->
     <string name="tool_merge_pdfs">Объединить PDF-файлы</string>
@@ -77,7 +89,7 @@
     <string name="tool_pdf_to_images">PDF в изображения</string>
     <string name="tool_html_to_pdf">HTML в PDF</string>
     <string name="tool_extract_text">Извлечь текст</string>
-    <string name="tool_scan_to_pdf">Сканировать в PDF</string>
+    <string name="tool_scan_to_pdf">Сканы и фото в PDF</string>
     <string name="tool_ocr">OCR</string>
     <string name="tool_image_tools">Инструменты для изображений</string>
     <string name="tool_image_compress">Сжать изображение</string>
@@ -113,7 +125,7 @@
     <string name="desc_pdf_to_images">Преобразование PDF-страниц в изображения</string>
     <string name="desc_html_to_pdf">Преобразование веб-страницы или HTML в PDF</string>
     <string name="desc_extract_text">Извлечь текстовое содержимое в файл TXT</string>
-    <string name="desc_scan_to_pdf">Сканирование документов с помощью камеры</string>
+    <string name="desc_scan_to_pdf">Снимите камерой или выберите фото и соберите PDF</string>
     <string name="desc_ocr">Сделайте отсканированные PDF-файлы доступными для поиска</string>
     <string name="desc_image_tools">Изменение размера, сжатие и конвертация изображений</string>
     <string name="desc_sign_pdf">Добавьте свою подпись в PDF</string>
@@ -220,6 +232,8 @@
     <string name="settings_section_appearance">Внешний вид</string>
     <string name="settings_section_storage">Хранилище</string>
     <string name="settings_section_support">Поддержка</string>
+    <string name="settings_github">Исходный код на GitHub</string>
+    <string name="settings_github_subtitle">Проблемы, идеи и код этого форка</string>
     <string name="settings_section_about">О</string>
     <string name="settings_section_language">Язык</string>
     <string name="settings_compression_quality">Качество сжатия по умолчанию</string>
@@ -443,6 +457,8 @@
     <string name="scan_add_images">Добавить изображения</string>
     <string name="scan_camera">Камера</string>
     <string name="scan_gallery">Галерея</string>
+    <string name="scan_move_page_left">Переместить страницу раньше</string>
+    <string name="scan_move_page_right">Переместить страницу позже</string>
     <string name="scan_pages_count">Страницы (%1$d)</string>
     <string name="action_crop">Обрезать</string>
     <string name="scan_page_size">Размер страницы</string>
@@ -452,6 +468,7 @@
     <string name="scan_pdf_created">PDF создан!</string>
     <string name="scan_pages_scanned">%1$d стр.</string>
     <string name="scan_create_pdf">Создать PDF</string>
+    <string name="scan_file_name">Имя файла</string>
     <string name="scan_more_documents">Сканировать еще</string>
     <string name="cd_capture">Сделать снимок</string>
 
@@ -540,6 +557,7 @@
     <string name="files_clear_dialog_message">Это удалит все файлы из истории. Сами файлы не будут удалены.</string>
     <string name="compress_no_pdf_subtitle">Выберите PDF-файл для уменьшения размера</string>
     <string name="action_share_all">Поделиться всем</string>
+    <string name="action_share">Поделиться</string>
     <string name="repair_title">Восстановление PDF</string>
     <string name="repair_no_pdf_subtitle">Выберите PDF для диагностики и восстановления</string>
     <string name="repair_analyzing_structure">Анализ структуры PDF...</string>
@@ -600,4 +618,28 @@
     <string name="fill_form_filled">Форма заполнена!</string>
     <string name="fill_fields_updated">Обновлено %1$d полей</string>
     <string name="fill_no_editable_fields">В этой форме нет редактируемых полей</string>
+
+    <!-- Режимы цвета сканирования и предпросмотр (дополнения форка) -->
+    <string name="scan_whiten_strength">Отбеливание фона</string>
+    <string name="scan_black_and_white">Чёрно-белое</string>
+    <string name="scan_black_and_white_hint">Только два тона — минимальный размер, для обычного текста</string>
+    <string name="scan_whiten_off">Фото</string>
+    <string name="scan_whiten_max">Чистый скан</string>
+    <string name="preview_title">Предпросмотр</string>
+    <string name="preview_page_indicator">Страница %1$d из %2$d</string>
+    <string name="preview_show_original">Показать оригинал</string>
+    <string name="preview_show_result">Показать результат</string>
+    <string name="preview_original_badge">Оригинал</string>
+    <string name="preview_updating">Обновляем предпросмотр…</string>
+    <string name="preview_unavailable">Предпросмотр недоступен</string>
+    <string name="preview_previous_page">Предыдущая страница</string>
+    <string name="preview_next_page">Следующая страница</string>
+    <string name="scan_black_point">Точка чёрного</string>
+    <string name="scan_black_point_soft">Мягкие серые</string>
+    <string name="scan_black_point_hard">Глубокий чёрный</string>
+    <string name="preview_zoom_hint">Двумя пальцами — увеличить, двойное касание — сбросить</string>
+    <string name="preview_swipe_hint">Свайп — листать страницы, двумя пальцами — увеличить, двойное касание — сбросить</string>
+    <string name="preview_apply_to_all">Применить ко всем страницам</string>
+    <string name="preview_apply_to_all_on">Настройки меняются для всех страниц</string>
+    <string name="preview_apply_to_all_off">Настройки меняются только для этой страницы</string>
 </resources>

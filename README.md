@@ -47,6 +47,40 @@
 > Offline · Privacy-first · No account required
 
 ---
+
+## 🔱 About this fork
+
+A fork of [Karna14314/Pdf_Tools](https://github.com/Karna14314/Pdf_Tools) with the scanning and
+navigation work below. Everything else is upstream.
+
+**Scanner filter, rewritten** — the old colour mode produced a plain photo: grey shadows, ink that
+stayed dark grey. `ScanEnhancer` now estimates the paper colour across the page (a coarse
+illumination field decides what is paper, and that colour is diffused into text blocks, stamps and
+photos so they are not mistaken for background), divides it out, and applies a levels curve on
+luminance while scaling R/G/B together, so paper turns white and coloured ink keeps its hue. Near-grey
+pixels are forced neutral, so black text no longer drifts towards the paper's tint.
+
+**Two sliders instead of five preset modes** — *Background whitening* (0 % = the photo as shot,
+100 % = clean scan) and *Black point* (where ink turns black; on an unwhitened photo it is plain
+contrast), plus a *Black & white* switch. Defaults: whitening 100 %, black point 50 %.
+
+**Live preview** — see the page on the target sheet before generating: pinch to zoom, swipe between
+pages, a compare button for the untouched photo, and a progress hairline while the filter catches up.
+Settings apply to the page on screen, or to every page with *Apply to all pages*.
+
+**Scan and Images-to-PDF merged** — one tool builds a PDF from camera captures and gallery photos
+alike, with page reordering, an editable file name, a choice between the app folder and a
+system dialog, and a share button for the finished file. The camera screen has a gallery shortcut.
+
+**Home screen** — full-width rows instead of square tiles that truncated every name, regrouped by
+what the user is trying to get done, plus favorites, recently used and a collapsed *Hidden* section;
+long-press a row to pin or hide it.
+
+**Page orientation** — a landscape photo now gets a landscape sheet instead of white bands.
+
+**History** — tap an entry to open its file; entries are titled by the saved file name.
+
+---
 ## ✨ Features
 
 ### 📄 PDF Management

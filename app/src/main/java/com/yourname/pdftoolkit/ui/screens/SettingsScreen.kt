@@ -98,7 +98,6 @@ fun SettingsScreen(
     var isClearing by remember { mutableStateOf(false) }
     var showClearCacheDialog by remember { mutableStateOf(false) }
     var showAboutDialog by remember { mutableStateOf(false) }
-    var showFeatureRequestDialog by remember { mutableStateOf(false) }
     var showImageFormatDialog by remember { mutableStateOf(false) }
     var showLicensesDialog by remember { mutableStateOf(false) }
     var showThemeDialog by remember { mutableStateOf(false) }
@@ -310,31 +309,11 @@ fun SettingsScreen(
             
             item {
                 SettingsItem(
-                    title = stringResource(R.string.settings_request_feature),
-                    subtitle = stringResource(R.string.settings_request_feature_subtitle),
-                    icon = Icons.Default.Lightbulb,
-                    onClick = { showFeatureRequestDialog = true }
-                )
-            }
-            
-            item {
-                SettingsItem(
-                    title = stringResource(R.string.settings_report_bug),
-                    subtitle = stringResource(R.string.settings_report_bug_subtitle),
-                    icon = Icons.Default.BugReport,
+                    title = stringResource(R.string.settings_github),
+                    subtitle = stringResource(R.string.settings_github_subtitle),
+                    icon = Icons.Default.Code,
                     onClick = {
-                        sendBugReport(context)
-                    }
-                )
-            }
-            
-            item {
-                SettingsItem(
-                    title = stringResource(R.string.settings_rate_app),
-                    subtitle = stringResource(R.string.settings_rate_app_subtitle),
-                    icon = Icons.Default.Star,
-                    onClick = {
-                        openPlayStore(context)
+                        openProjectRepository(context)
                     }
                 )
             }
@@ -641,17 +620,6 @@ fun SettingsScreen(
             }
         )
     }
-    
-    // Feature Request Dialog
-    if (showFeatureRequestDialog) {
-        FeatureRequestDialog(
-            onDismiss = { showFeatureRequestDialog = false },
-            onSubmit = { featureText ->
-                sendFeatureRequest(context, featureText)
-                showFeatureRequestDialog = false
-            }
-        )
-    }
 }
 
 @Composable
@@ -742,180 +710,14 @@ private fun SettingsItem(
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun FeatureRequestDialog(
-    onDismiss: () -> Unit,
-    onSubmit: (String) -> Unit
-) {
-    var featureText by remember { mutableStateOf("") }
-    var category by remember { mutableStateOf("Feature") }
-    var showCategoryMenu by remember { mutableStateOf(false) }
-    
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        icon = { Icon(Icons.Default.Lightbulb, contentDescription = null) },
-        title = { Text(stringResource(R.string.feature_request_title)) },
-        text = {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                Text(stringResource(R.string.feature_request_description))
-                
-                // Category selector
-                ExposedDropdownMenuBox(
-                    expanded = showCategoryMenu,
-                    onExpandedChange = { showCategoryMenu = it }
-                ) {
-                    OutlinedTextField(
-                        value = category,
-                        onValueChange = {},
-                        readOnly = true,
-                        label = { Text(stringResource(R.string.feature_request_category)) },
-                        trailingIcon = {
-                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = showCategoryMenu)
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .menuAnchor()
-                    )
-                    ExposedDropdownMenu(
-                        expanded = showCategoryMenu,
-                        onDismissRequest = { showCategoryMenu = false }
-                    ) {
-                        listOf("Feature", "Improvement", "UI/UX", "Other").forEach { option ->
-                            DropdownMenuItem(
-                                text = { Text(option) },
-                                onClick = {
-                                    category = option
-                                    showCategoryMenu = false
-                                }
-                            )
-                        }
-                    }
-                }
-                
-                OutlinedTextField(
-                    value = featureText,
-                    onValueChange = { featureText = it },
-                    label = { Text(stringResource(R.string.feature_request_idea)) },
-                    placeholder = { Text(stringResource(R.string.feature_request_placeholder)) },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(150.dp),
-                    maxLines = 6
-                )
-            }
-        },
-        confirmButton = {
-            Button(
-                onClick = { onSubmit("[$category] $featureText") },
-                enabled = featureText.isNotBlank()
-            ) {
-                Icon(Icons.Default.Send, contentDescription = null, modifier = Modifier.size(18.dp))
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(stringResource(R.string.action_submit))
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.action_cancel))
-            }
-        }
-    )
-}
 
 // Helper functions for intents
 
-/**
- * Developer email for support requests.
- */
-private const val DEVELOPER_EMAIL = "developerncn29@gmail.com"
+/** The fork's source, the one support channel this build offers. */
+private const val PROJECT_REPOSITORY_URL = "https://github.com/nikallass/Pdf_Tools"
 
-private fun sendFeatureRequest(context: Context, featureText: String) {
-    val deviceInfo = """
-        
-        ---
-        Device: ${Build.MANUFACTURER} ${Build.MODEL}
-        Android: ${Build.VERSION.RELEASE} (SDK ${Build.VERSION.SDK_INT})
-        App Version: ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})
-    """.trimIndent()
-    
-    val emailBody = "$featureText\n$deviceInfo"
-    
-    try {
-        // Restrict to Gmail only
-        val intent = Intent(Intent.ACTION_SEND).apply {
-            type = "message/rfc822"
-            setPackage("com.google.android.gm") // Gmail package
-            putExtra(Intent.EXTRA_EMAIL, arrayOf(DEVELOPER_EMAIL))
-            putExtra(Intent.EXTRA_SUBJECT, "[Feature Request] PDF Toolkit")
-            putExtra(Intent.EXTRA_TEXT, emailBody)
-        }
-        
-        context.startActivity(intent)
-    } catch (e: Exception) {
-        // Gmail not installed
-        Toast.makeText(
-            context, 
-            "Gmail app is required. Please install Gmail or send feedback to $DEVELOPER_EMAIL", 
-            Toast.LENGTH_LONG
-        ).show()
-    }
-}
-
-private fun sendBugReport(context: Context) {
-    val deviceInfo = """
-        Bug Description:
-        [Please describe the issue you encountered]
-        
-        Steps to Reproduce:
-        1. 
-        2. 
-        3. 
-        
-        Expected Behavior:
-        [What did you expect to happen?]
-        
-        Actual Behavior:
-        [What actually happened?]
-        
-        ---
-        Device: ${Build.MANUFACTURER} ${Build.MODEL}
-        Android: ${Build.VERSION.RELEASE} (SDK ${Build.VERSION.SDK_INT})
-        App Version: ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})
-    """.trimIndent()
-    
-    try {
-        // Restrict to Gmail only
-        val intent = Intent(Intent.ACTION_SEND).apply {
-            type = "message/rfc822"
-            setPackage("com.google.android.gm") // Gmail package
-            putExtra(Intent.EXTRA_EMAIL, arrayOf(DEVELOPER_EMAIL))
-            putExtra(Intent.EXTRA_SUBJECT, "[Bug Report] PDF Toolkit")
-            putExtra(Intent.EXTRA_TEXT, deviceInfo)
-        }
-        
-        context.startActivity(intent)
-    } catch (e: Exception) {
-        // Gmail not installed
-        Toast.makeText(
-            context, 
-            "Gmail app is required. Please install Gmail or send bug reports to $DEVELOPER_EMAIL", 
-            Toast.LENGTH_LONG
-        ).show()
-    }
-}
-
-private fun openPlayStore(context: Context) {
-    try {
-        context.startActivity(
-            Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.yourname.pdftoolkit"))
-        )
-    } catch (e: Exception) {
-        context.startActivity(
-            Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.yourname.pdftoolkit"))
-        )
-    }
+private fun openProjectRepository(context: Context) {
+    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(PROJECT_REPOSITORY_URL)))
 }
 
 private fun openPrivacyPolicy(context: Context) {

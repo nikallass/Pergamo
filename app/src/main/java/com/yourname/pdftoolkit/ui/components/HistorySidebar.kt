@@ -87,7 +87,7 @@ fun HistoryMenuButton(
         modifier = modifier
     ) {
         Icon(
-            imageVector = Icons.Default.Menu,
+            imageVector = Icons.Default.History,
             contentDescription = stringResource(R.string.nav_open_history),
             tint = MaterialTheme.colorScheme.onSurface
         )
@@ -363,6 +363,7 @@ suspend fun copyUriToCache(context: android.content.Context, uri: Uri): Uri? = w
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun HistoryItem(
     entry: HistoryEntry,
@@ -373,7 +374,41 @@ private fun HistoryItem(
     val scope = rememberCoroutineScope()
     var showMenu by remember { mutableStateOf(false) }
     
+    val canOpen = entry.outputFileUri != null && entry.status == OperationStatus.SUCCESS
+    
+    /** Open the entry's output: images in the gallery, PDFs in the built-in viewer. */
+    fun openOutput() {
+        val outputUri = entry.outputFileUri ?: return
+        try {
+            if (entry.isImage) {
+                val uris = entry.outputFileUris.mapNotNull {
+                    runCatching { Uri.parse(it) }.getOrNull()
+                }
+                scope.launch(Dispatchers.IO) {
+                    if (uris.isNotEmpty()) {
+                        FileOpener.openMultipleImages(context, uris)
+                    } else {
+                        FileOpener.openImage(context, Uri.parse(outputUri))
+                    }
+                }
+            } else {
+                // For PDFs, copy to cache first to avoid permission issues
+                val uri = Uri.parse(outputUri)
+                scope.launch(Dispatchers.IO) {
+                    val cachedUri = copyUriToCache(context, uri)
+                    withContext(Dispatchers.Main) {
+                        onOpenFile(cachedUri ?: uri)
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            android.util.Log.e("HistorySidebar", "Failed to open history entry", e)
+        }
+    }
+    
     Card(
+        onClick = { if (canOpen) openOutput() },
+        enabled = canOpen,
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = when (entry.status) {
@@ -422,37 +457,27 @@ private fun HistoryItem(
                 Spacer(modifier = Modifier.width(12.dp))
                 
                 Column(modifier = Modifier.weight(1f)) {
+                    // The saved file is what the user is looking for; the tool that made it is
+                    // the supporting detail.
+                    val outputCount = entry.outputFileUris.size
+                    val fileName = entry.outputFileName?.let {
+                        if (outputCount > 1) "$it ($outputCount files)" else it
+                    }
                     Text(
-                        text = entry.operationName,
+                        text = fileName ?: entry.inputFileName ?: entry.operationName,
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
                     
-                    if (entry.outputFileName != null) {
-                        val outputCount = entry.outputFileUris.size
-                        val displayName = if (outputCount > 1) {
-                            "${entry.outputFileName} ($outputCount files)"
-                        } else {
-                            entry.outputFileName
-                        }
-                        Text(
-                            text = displayName,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    } else if (entry.inputFileName != null) {
-                        Text(
-                            text = entry.inputFileName,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    }
+                    Text(
+                        text = entry.operationName,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
                     
                     Text(
                         text = entry.relativeTime,
@@ -532,37 +557,7 @@ private fun HistoryItem(
                                 },
                                 onClick = {
                                     showMenu = false
-                                    try {
-                                        if (isImage) {
-                                            val uris = entry.outputFileUris.mapNotNull {
-                                                runCatching { Uri.parse(it) }.getOrNull()
-                                            }
-                                            scope.launch(Dispatchers.IO) {
-                                                if (uris.isNotEmpty()) {
-                                                    FileOpener.openMultipleImages(context, uris)
-                                                } else {
-                                                    val fallbackUri = Uri.parse(entry.outputFileUri)
-                                                    FileOpener.openImage(context, fallbackUri)
-                                                }
-                                            }
-                                        } else {
-                                            // For PDFs, copy to cache first to avoid permission issues
-                                            val uri = Uri.parse(entry.outputFileUri)
-                                            scope.launch(Dispatchers.IO) {
-                                                val cachedUri = copyUriToCache(context, uri)
-                                                withContext(Dispatchers.Main) {
-                                                    if (cachedUri != null) {
-                                                        onOpenFile(cachedUri)
-                                                    } else {
-                                                        // Fallback: try original URI
-                                                        onOpenFile(uri)
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    } catch (e: Exception) {
-                                        // Handle invalid URI
-                                    }
+                                    openOutput()
                                 }
                             )
                         }

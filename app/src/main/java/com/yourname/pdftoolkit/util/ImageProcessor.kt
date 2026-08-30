@@ -400,6 +400,18 @@ object ImageProcessor {
     }
     
     /**
+     * Load a downscaled, EXIF-rotated bitmap for on-screen previews.
+     *
+     * @param maxDimension longest edge of the returned bitmap; keep it small, the caller
+     *   usually re-processes this bitmap on every settings change
+     */
+    fun loadForPreview(
+        context: Context,
+        uri: Uri,
+        maxDimension: Int = 1200
+    ): Bitmap? = loadBitmapWithExif(context, uri, maxDimension)
+    
+    /**
      * Load bitmap with memory-safe options and EXIF rotation applied.
      */
     private fun loadBitmapWithExif(

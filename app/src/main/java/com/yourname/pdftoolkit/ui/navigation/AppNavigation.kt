@@ -15,7 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.PictureAsPdf
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
@@ -366,7 +366,7 @@ fun AppNavigation(
                     navigationIcon = {
                         IconButton(onClick = { isHistorySidebarOpen = true }) {
                             Icon(
-                                imageVector = Icons.Default.Menu,
+                                imageVector = Icons.Default.History,
                                 contentDescription = stringResource(R.string.nav_open_history)
                             )
                         }
@@ -637,8 +637,10 @@ fun AppNavigation(
                 )
             }
             
+            // Images-to-PDF was a second, poorer copy of the scan screen (which already picks
+            // photos from the gallery), so the old route now lands on the merged one.
             composable(Screen.Convert.route) {
-                ConvertScreen(onNavigateBack = { navController.popBackStack() })
+                ScanToPdfScreen(onNavigateBack = { navController.popBackStack() })
             }
             
             composable(Screen.PdfToImage.route) {

@@ -49,13 +49,14 @@ class ImageConverterTest {
 
     @Test
     fun imagesToPdf_screenLoads_noCrash() {
-        // Navigate to Images to PDF screen
-        composeTestRule.onNodeWithText("Images to PDF", useUnmergedTree = true)
+        // Images to PDF is now part of the scan screen — one tool builds a PDF from camera
+        // captures and gallery photos alike.
+        composeTestRule.onNodeWithText("Scan & photos to PDF", useUnmergedTree = true)
             .performClick()
         
         composeTestRule.waitForIdle()
         
         // Verify screen loads without crash
-        composeTestRule.onNodeWithText("Images to PDF").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Scan & photos to PDF").assertIsDisplayed()
     }
 }

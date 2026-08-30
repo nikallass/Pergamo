@@ -3,13 +3,8 @@ package com.yourname.pdftoolkit.domain.operations
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Canvas
-import android.graphics.ColorMatrix
-import android.graphics.ColorMatrixColorFilter
 import androidx.exifinterface.media.ExifInterface
 import android.graphics.Matrix
-import android.graphics.Paint
-import android.graphics.RectF
 import android.net.Uri
 import android.util.Log
 import com.tom_roush.pdfbox.pdmodel.PDDocument
@@ -38,15 +33,6 @@ enum class ScanPageSize(val rect: PDRectangle, val displayName: String) {
 }
 
 /**
- * Color mode for scanned documents.
- */
-enum class ScanColorMode {
-    COLOR,
-    GRAYSCALE,
-    BLACK_AND_WHITE
-}
-
-/**
  * Scan quality preset.
  */
 enum class ScanQuality(val dpi: Int, val quality: Int) {
@@ -69,11 +55,11 @@ data class ScannedPage(
  */
 data class ScanConfig(
     val pageSize: ScanPageSize = ScanPageSize.A4,
-    val colorMode: ScanColorMode = ScanColorMode.COLOR,
     val quality: ScanQuality = ScanQuality.MEDIUM,
     val autoCrop: Boolean = true,
     val autoRotate: Boolean = true,
-    val enhanceContrast: Boolean = true
+    /** Image settings used for every page that has no entry of its own. */
+    val adjustments: ScanAdjustments = ScanAdjustments()
 )
 
 /**
@@ -110,6 +96,36 @@ class PdfScanner(private val context: Context) {
         imageUris: List<Uri>,
         outputUri: Uri,
         config: ScanConfig = ScanConfig(),
+        perPageAdjustments: List<ScanAdjustments> = emptyList(),
+        progressCallback: (Int) -> Unit = {}
+    ): ScanToPdfResult = withContext(Dispatchers.IO) {
+        val outputStream = try {
+            context.contentResolver.openOutputStream(outputUri)
+        } catch (e: Exception) {
+            null
+        } ?: return@withContext ScanToPdfResult(
+            success = false,
+            pagesScanned = 0,
+            errorMessage = "Cannot open output file"
+        )
+        
+        outputStream.use { stream ->
+            imagesToPdf(imageUris, stream, config, perPageAdjustments, progressCallback)
+                .let { if (it.success) it.copy(outputUri = outputUri) else it }
+        }
+    }
+    
+    /**
+     * Convert multiple scanned images into a PDF written to [outputStream].
+     *
+     * The stream flavour is what lets the caller save into the app's own output folder without
+     * going through the system file dialog.
+     */
+    suspend fun imagesToPdf(
+        imageUris: List<Uri>,
+        outputStream: java.io.OutputStream,
+        config: ScanConfig = ScanConfig(),
+        perPageAdjustments: List<ScanAdjustments> = emptyList(),
         progressCallback: (Int) -> Unit = {}
     ): ScanToPdfResult = withContext(Dispatchers.IO) {
         if (imageUris.isEmpty()) {
@@ -129,12 +145,14 @@ class PdfScanner(private val context: Context) {
             val totalImages = imageUris.size
             
             for ((index, imageUri) in imageUris.withIndex()) {
+                val adjustments = perPageAdjustments.getOrNull(index) ?: config.adjustments
+                
                 // Load and process image
-                val bitmap = loadAndProcessImage(imageUri, config)
+                val bitmap = loadAndProcessImage(imageUri, adjustments)
                     ?: continue
                 
                 // Add page with image
-                addImagePage(document, bitmap, config)
+                addImagePage(document, bitmap, config, adjustments)
                 bitmap.recycle()
                 
                 val progress = ((index + 1) * 90) / totalImages
@@ -144,18 +162,16 @@ class PdfScanner(private val context: Context) {
             progressCallback(95)
             
             // Save the document
-            context.contentResolver.openOutputStream(outputUri)?.use { outputStream ->
-                document.save(outputStream)
+            val pageCount = document.numberOfPages
+            document.save(outputStream)
             outputStream.flush()
-            }
             
             document.close()
             progressCallback(100)
             
             ScanToPdfResult(
                 success = true,
-                pagesScanned = document.numberOfPages,
-                outputUri = outputUri
+                pagesScanned = pageCount
             )
             
         } catch (e: IOException) {
@@ -229,18 +245,9 @@ class PdfScanner(private val context: Context) {
     /**
      * Load and process an image based on configuration.
      */
-    private fun loadAndProcessImage(uri: Uri, config: ScanConfig): Bitmap? {
-        var bitmap = loadBitmap(uri) ?: return null
-        
-        // Apply color mode
-        bitmap = applyColorMode(bitmap, config.colorMode)
-        
-        // Enhance contrast if enabled
-        if (config.enhanceContrast) {
-            bitmap = enhanceContrast(bitmap)
-        }
-        
-        return bitmap
+    private fun loadAndProcessImage(uri: Uri, adjustments: ScanAdjustments): Bitmap? {
+        val bitmap = loadBitmap(uri) ?: return null
+        return ScanEnhancer.enhance(bitmap, adjustments)
     }
     
     /**
@@ -335,157 +342,17 @@ class PdfScanner(private val context: Context) {
     }
     
     /**
-     * Validates a bitmap for safe drawing operations.
-     * @return true if bitmap is safe to draw (non-null, not recycled, has dimensions)
+     * Turn the page sideways for a landscape photo, so the image fills the sheet instead of
+     * sitting between two white bands.
      */
-    private fun isBitmapValid(bitmap: Bitmap?): Boolean {
-        if (bitmap == null) return false
-        if (bitmap.isRecycled) return false
-        if (bitmap.width <= 0 || bitmap.height <= 0) return false
-        return true
-    }
-
-    /**
-     * Safely draws a bitmap to a canvas with validation and error handling.
-     * @return true if draw operation succeeded
-     */
-    private fun safeDrawBitmap(
-        canvas: Canvas,
-        bitmap: Bitmap?,
-        left: Float,
-        top: Float,
-        paint: Paint? = null,
-        logTag: String = "PdfScanner"
-    ): Boolean {
-        if (!isBitmapValid(bitmap)) {
-            Log.w(logTag, "Skipping invalid bitmap - null: ${bitmap == null}, recycled: ${bitmap?.isRecycled}, size: ${bitmap?.width}x${bitmap?.height}")
-            return false
+    private fun orientLikeImage(rect: PDRectangle, bitmap: Bitmap): PDRectangle {
+        val imageIsLandscape = bitmap.width > bitmap.height
+        val pageIsLandscape = rect.width > rect.height
+        return if (imageIsLandscape != pageIsLandscape) {
+            PDRectangle(rect.height, rect.width)
+        } else {
+            rect
         }
-
-        return try {
-            val drawableBitmap = bitmap ?: return false
-            if (drawableBitmap.isRecycled) {
-                Log.w(logTag, "Skipping drawBitmap for recycled bitmap")
-                return false
-            }
-            canvas.drawBitmap(drawableBitmap, left, top, paint)
-            true
-        } catch (e: Exception) {
-            Log.e(logTag, "Failed to draw bitmap: ${e.message}", e)
-            false
-        }
-    }
-
-    /**
-     * Apply color mode to bitmap.
-     */
-    private fun applyColorMode(bitmap: Bitmap, mode: ScanColorMode): Bitmap {
-        return when (mode) {
-            ScanColorMode.COLOR -> bitmap
-            ScanColorMode.GRAYSCALE -> convertToGrayscale(bitmap)
-            ScanColorMode.BLACK_AND_WHITE -> convertToBlackAndWhite(bitmap)
-        }
-    }
-    
-    /**
-     * Convert bitmap to grayscale.
-     */
-    private fun convertToGrayscale(source: Bitmap): Bitmap {
-        if (!isBitmapValid(source)) {
-            Log.w("PdfScanner", "Invalid source bitmap for grayscale conversion")
-            return source
-        }
-        
-        val result = Bitmap.createBitmap(source.width, source.height, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(result)
-        
-        val colorMatrix = ColorMatrix().apply {
-            setSaturation(0f)
-        }
-        
-        val paint = Paint().apply {
-            colorFilter = ColorMatrixColorFilter(colorMatrix)
-        }
-        
-        safeDrawBitmap(canvas, source, 0f, 0f, paint, "convertToGrayscale")
-        
-        if (source != result) {
-            source.recycle()
-        }
-        
-        return result
-    }
-    
-    /**
-     * Convert bitmap to black and white (threshold).
-     */
-    private fun convertToBlackAndWhite(source: Bitmap): Bitmap {
-        val grayscale = convertToGrayscale(source)
-        val width = grayscale.width
-        val height = grayscale.height
-        val result = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-
-        val pixels = IntArray(width * height)
-        grayscale.getPixels(pixels, 0, width, 0, 0, width, height)
-
-        val threshold = 128
-
-        for (i in pixels.indices) {
-            val pixel = pixels[i]
-            // For grayscale images, R=G=B. Extracting red component is sufficient.
-            // Using bitwise operations for performance: (pixel >> 16) & 0xFF
-            val gray = (pixel shr 16) and 0xFF
-
-            pixels[i] = if (gray > threshold) {
-                android.graphics.Color.WHITE
-            } else {
-                android.graphics.Color.BLACK
-            }
-        }
-
-        result.setPixels(pixels, 0, width, 0, 0, width, height)
-
-        if (grayscale != source) {
-            grayscale.recycle()
-        }
-
-        return result
-    }
-    
-    /**
-     * Enhance contrast of bitmap.
-     */
-    private fun enhanceContrast(source: Bitmap): Bitmap {
-        if (!isBitmapValid(source)) {
-            Log.w("PdfScanner", "Invalid source bitmap for contrast enhancement")
-            return source
-        }
-        
-        val result = Bitmap.createBitmap(source.width, source.height, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(result)
-        
-        // Increase contrast by adjusting color matrix
-        val contrast = 1.2f
-        val translate = (-.5f * contrast + .5f) * 255f
-        
-        val colorMatrix = ColorMatrix(floatArrayOf(
-            contrast, 0f, 0f, 0f, translate,
-            0f, contrast, 0f, 0f, translate,
-            0f, 0f, contrast, 0f, translate,
-            0f, 0f, 0f, 1f, 0f
-        ))
-        
-        val paint = Paint().apply {
-            colorFilter = ColorMatrixColorFilter(colorMatrix)
-        }
-        
-        safeDrawBitmap(canvas, source, 0f, 0f, paint, "enhanceContrast")
-        
-        if (source != result) {
-            source.recycle()
-        }
-        
-        return result
     }
     
     /**
@@ -494,7 +361,8 @@ class PdfScanner(private val context: Context) {
     private fun addImagePage(
         document: PDDocument,
         bitmap: Bitmap,
-        config: ScanConfig
+        config: ScanConfig,
+        adjustments: ScanAdjustments
     ) {
         // Determine page size
         val pageRect = if (config.pageSize == ScanPageSize.FIT_IMAGE) {
@@ -504,14 +372,14 @@ class PdfScanner(private val context: Context) {
             val heightPoints = (bitmap.height / dpi) * 72
             PDRectangle(widthPoints, heightPoints)
         } else {
-            config.pageSize.rect
+            orientLikeImage(config.pageSize.rect, bitmap)
         }
         
         val page = PDPage(pageRect)
         document.addPage(page)
         
         // Create PDF image - use JPEG for photos to save space
-        val pdImage = if (config.colorMode == ScanColorMode.BLACK_AND_WHITE) {
+        val pdImage = if (adjustments.blackAndWhite) {
             LosslessFactory.createFromImage(document, bitmap)
         } else {
             JPEGFactory.createFromImage(document, bitmap, config.quality.quality / 100f)

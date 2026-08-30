@@ -61,6 +61,18 @@
     <string name="category_quick_actions">Quick Actions</string>
     <string name="category_image_tools">Image Tools</string>
     <string name="category_view_export">View &amp; Export</string>
+    <string name="category_favorites">Favorites</string>
+    <string name="category_recent">Recently used</string>
+    <string name="category_create">Create a PDF</string>
+    <string name="category_document">Document</string>
+    <string name="category_export">Export &amp; text</string>
+    <string name="category_view">View</string>
+    <string name="category_protect">Protect &amp; sign</string>
+    <string name="category_hidden">Hidden (%1$d)</string>
+    <string name="tool_menu_favorite_add">Add to favorites</string>
+    <string name="tool_menu_favorite_remove">Remove from favorites</string>
+    <string name="tool_menu_hide">Hide</string>
+    <string name="tool_menu_unhide">Show again</string>
 
     <!-- Tool Names - Organize -->
     <string name="tool_merge_pdfs">Merge PDFs</string>
@@ -77,7 +89,7 @@
     <string name="tool_pdf_to_images">PDF to Images</string>
     <string name="tool_html_to_pdf">HTML to PDF</string>
     <string name="tool_extract_text">Extract Text</string>
-    <string name="tool_scan_to_pdf">Scan to PDF</string>
+    <string name="tool_scan_to_pdf">Scan &amp; photos to PDF</string>
     <string name="tool_ocr">OCR</string>
     <string name="tool_image_tools">Image Tools</string>
     <string name="tool_image_compress">Compress Image</string>
@@ -113,7 +125,7 @@
     <string name="desc_pdf_to_images">Convert PDF pages to images</string>
     <string name="desc_html_to_pdf">Convert webpage or HTML to PDF</string>
     <string name="desc_extract_text">Extract text content to TXT file</string>
-    <string name="desc_scan_to_pdf">Scan documents with camera</string>
+    <string name="desc_scan_to_pdf">Shoot with the camera or pick photos, then build a PDF</string>
     <string name="desc_ocr">Make scanned PDFs searchable</string>
     <string name="desc_image_tools">Resize, compress, convert images</string>
     <string name="desc_sign_pdf">Add your signature to PDF</string>
@@ -220,6 +232,8 @@
     <string name="settings_section_appearance">Appearance</string>
     <string name="settings_section_storage">Storage</string>
     <string name="settings_section_support">Support</string>
+    <string name="settings_github">Source code on GitHub</string>
+    <string name="settings_github_subtitle">Issues, ideas and the code of this fork</string>
     <string name="settings_section_about">About</string>
     <string name="settings_section_language">Language</string>
     <string name="settings_compression_quality">Default Compression Quality</string>
@@ -443,6 +457,8 @@ Saved to: %1$s</string>
     <string name="scan_add_images">Add Images</string>
     <string name="scan_camera">Camera</string>
     <string name="scan_gallery">Gallery</string>
+    <string name="scan_move_page_left">Move page earlier</string>
+    <string name="scan_move_page_right">Move page later</string>
     <string name="scan_pages_count">Pages (%1$d)</string>
     <string name="action_crop">Crop</string>
     <string name="scan_page_size">Page Size</string>
@@ -452,6 +468,7 @@ Saved to: %1$s</string>
     <string name="scan_pdf_created">PDF Created!</string>
     <string name="scan_pages_scanned">%1$d pages</string>
     <string name="scan_create_pdf">Create PDF</string>
+    <string name="scan_file_name">File name</string>
     <string name="scan_more_documents">Scan More Documents</string>
     <string name="cd_capture">Capture</string>
 
@@ -540,6 +557,7 @@ Saved to: %1$s</string>
     <string name="files_clear_dialog_message">This will remove all files from your recent history. The actual files will not be deleted.</string>
     <string name="compress_no_pdf_subtitle">Select a PDF file to reduce its file size</string>
     <string name="action_share_all">Share All</string>
+    <string name="action_share">Share</string>
     <string name="repair_title">Repair PDF</string>
     <string name="repair_no_pdf_subtitle">Select a PDF to diagnose and repair</string>
     <string name="repair_analyzing_structure">Analyzing PDF structure...</string>
@@ -602,4 +620,28 @@ Saved to: %1$s</string>
     <string name="fill_form_filled">Form Filled!</string>
     <string name="fill_fields_updated">%1$d fields updated</string>
     <string name="fill_no_editable_fields">This form has no editable fields</string>
+
+    <!-- Scan color modes and preview (fork additions) -->
+    <string name="scan_whiten_strength">Background whitening</string>
+    <string name="scan_black_and_white">Black &amp; white</string>
+    <string name="scan_black_and_white_hint">Two tones only — smallest file, best for plain text</string>
+    <string name="scan_whiten_off">Photo</string>
+    <string name="scan_whiten_max">Clean scan</string>
+    <string name="preview_title">Preview</string>
+    <string name="preview_page_indicator">Page %1$d of %2$d</string>
+    <string name="preview_show_original">Show original</string>
+    <string name="preview_show_result">Show result</string>
+    <string name="preview_original_badge">Original</string>
+    <string name="preview_updating">Updating preview…</string>
+    <string name="preview_unavailable">Preview unavailable</string>
+    <string name="preview_previous_page">Previous page</string>
+    <string name="preview_next_page">Next page</string>
+    <string name="scan_black_point">Black point</string>
+    <string name="scan_black_point_soft">Soft greys</string>
+    <string name="scan_black_point_hard">Deep black</string>
+    <string name="preview_zoom_hint">Pinch to zoom, double tap to reset</string>
+    <string name="preview_swipe_hint">Swipe to change page, pinch to zoom, double tap to reset</string>
+    <string name="preview_apply_to_all">Apply to all pages</string>
+    <string name="preview_apply_to_all_on">Settings change every page</string>
+    <string name="preview_apply_to_all_off">Settings change this page only</string>
 </resources>

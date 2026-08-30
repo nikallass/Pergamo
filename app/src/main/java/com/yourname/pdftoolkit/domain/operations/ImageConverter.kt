@@ -50,6 +50,9 @@ class ImageConverter {
      * @param outputStream Output stream for the PDF
      * @param pageSize Page size for the PDF
      * @param quality Image quality (1-100, only affects JPEG images)
+     * @param adjustments Scan-style filter applied to every image that has no entry in
+     *   [perPageAdjustments]; defaults to leaving the photo as it is
+     * @param perPageAdjustments Per-image settings, in the same order as [imageUris]
      * @param onProgress Progress callback (0.0 to 1.0)
      * @return Number of images converted
      */
@@ -59,6 +62,8 @@ class ImageConverter {
         outputStream: OutputStream,
         pageSize: PageSize = PageSize.A4,
         quality: Int = 85,
+        adjustments: ScanAdjustments = ScanAdjustments(whitenStrength = 0f, blackPoint = 0f),
+        perPageAdjustments: List<ScanAdjustments> = emptyList(),
         onProgress: (Float) -> Unit = {}
     ): Result<Int> = withContext(Dispatchers.IO) {
         if (imageUris.isEmpty()) {
@@ -71,13 +76,16 @@ class ImageConverter {
         
         try {
             imageUris.forEachIndexed { index, uri ->
-                val bitmap = loadBitmap(context, uri)
+                val loaded = loadBitmap(context, uri)
                     ?: return@withContext Result.failure(
                         IllegalStateException("Cannot load image: $uri")
                     )
                 
+                val pageAdjustments = perPageAdjustments.getOrNull(index) ?: adjustments
+                val bitmap = ScanEnhancer.enhance(loaded, pageAdjustments)
+                
                 try {
-                    addImageAsPage(document, bitmap, pageSize)
+                    addImageAsPage(document, bitmap, pageSize, pageAdjustments.blackAndWhite)
                 } finally {
                     bitmap.recycle()
                 }
@@ -246,21 +254,29 @@ class ImageConverter {
     private fun addImageAsPage(
         document: PDDocument,
         bitmap: Bitmap,
-        pageSize: PageSize
+        pageSize: PageSize,
+        blackAndWhite: Boolean = false
     ) {
         val pageRect = if (pageSize == PageSize.FIT_IMAGE) {
             // Create page that fits the image
             PDRectangle(bitmap.width.toFloat(), bitmap.height.toFloat())
         } else {
-            pageSize.rectangle
+            // Turn the sheet sideways for a landscape photo instead of adding white bands.
+            val rect = pageSize.rectangle
+            if ((bitmap.width > bitmap.height) != (rect.width > rect.height)) {
+                PDRectangle(rect.height, rect.width)
+            } else {
+                rect
+            }
         }
         
         val page = PDPage(pageRect)
         document.addPage(page)
         
-        // Use JPEGFactory for large images to save memory, LosslessFactory for small ones
+        // Use JPEGFactory for large images to save memory, LosslessFactory for small ones.
+        // Two-tone pages compress far better (and stay crisp) as lossless images.
         val pixelCount = bitmap.width * bitmap.height
-        val pdImage = if (pixelCount > 1024 * 1024) { // > 1MP use JPEG
+        val pdImage = if (pixelCount > 1024 * 1024 && !blackAndWhite) {
             JPEGFactory.createFromImage(document, bitmap, 0.9f)
         } else {
             LosslessFactory.createFromImage(document, bitmap)

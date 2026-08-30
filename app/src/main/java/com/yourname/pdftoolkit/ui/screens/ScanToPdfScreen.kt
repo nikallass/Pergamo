@@ -708,7 +708,8 @@ fun ScanToPdfScreen(
                                     context = context,
                                     uri = state.resultUri!!,
                                     mimeType = "application/pdf",
-                                    title = state.outputFileName()
+                                    title = state.outputFileName(),
+                                    fileName = state.outputFileName()
                                 )
                             }
                         },

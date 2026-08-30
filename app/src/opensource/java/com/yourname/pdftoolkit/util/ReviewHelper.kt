@@ -5,16 +5,17 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
+import com.yourname.pdftoolkit.R
 
 /**
  * Helper class to handle Reviews.
- * Open Source implementation shows a custom dialog linking to GitHub.
+ * Open Source implementation shows a custom dialog linking to the fork on GitHub.
  */
 object ReviewHelper {
 
     private const val TAG = "ReviewHelper"
-    private const val GITHUB_URL = "https://github.com/Karna14314/pdf-toolkit"
-    private const val GITHUB_RELEASES_URL = "https://github.com/Karna14314/pdf-toolkit/releases"
+    private const val FORK_URL = "https://github.com/nikallass/Pdf_Tools"
+    private const val FORK_RELEASES_URL = "https://github.com/nikallass/Pdf_Tools/releases"
 
     /**
      * Trigger the review flow (Custom Dialog for Open Source).
@@ -24,20 +25,20 @@ object ReviewHelper {
     fun showReview(activity: Activity) {
         try {
             val builder = AlertDialog.Builder(activity)
-            builder.setTitle("Enjoying PDF Toolkit?")
-            builder.setMessage("If you like this app, please consider starring us on GitHub or checking out the latest releases. Your support helps us keep it free and open source!")
+            builder.setTitle(activity.getString(R.string.review_fork_title))
+            builder.setMessage(activity.getString(R.string.review_fork_message))
 
-            builder.setPositiveButton("Star on GitHub") { dialog, _ ->
-                openUrl(activity, GITHUB_URL)
+            builder.setPositiveButton(activity.getString(R.string.review_star_fork)) { dialog, _ ->
+                openUrl(activity, FORK_URL)
                 dialog.dismiss()
             }
 
-            builder.setNegativeButton("Maybe Later") { dialog, _ ->
+            builder.setNegativeButton(activity.getString(R.string.review_maybe_later)) { dialog, _ ->
                 dialog.dismiss()
             }
 
-            builder.setNeutralButton("View Releases") { dialog, _ ->
-                openUrl(activity, GITHUB_RELEASES_URL)
+            builder.setNeutralButton(activity.getString(R.string.review_view_releases)) { dialog, _ ->
+                openUrl(activity, FORK_RELEASES_URL)
                 dialog.dismiss()
             }
 

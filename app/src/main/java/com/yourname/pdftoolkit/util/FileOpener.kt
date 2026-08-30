@@ -197,15 +197,39 @@ object FileOpener {
      * @param uri URI of the file
      * @param mimeType MIME type of the file
      * @param title Title for the share dialog
+     * @param fileName Name the receiving app should see. Without it the name of the shared copy
+     *   is taken from the source, and a document saved through the system dialog would otherwise
+     *   arrive as `open_1735…pdf`.
      */
-    suspend fun shareFile(context: Context, uri: Uri, mimeType: String, title: String = "Share") {
+    suspend fun shareFile(
+        context: Context,
+        uri: Uri,
+        mimeType: String,
+        title: String = "Share",
+        fileName: String? = null
+    ) {
         try {
-            val accessibleUri = getAccessibleUri(context, uri, getExtensionFromMimeType(mimeType))
+            val accessibleUri = getAccessibleUri(
+                context = context,
+                uri = uri,
+                extension = getExtensionFromMimeType(mimeType),
+                preferredName = fileName
+            )
+            val displayName = fileName ?: displayNameOf(context, accessibleUri)
             
             val intent = Intent(Intent.ACTION_SEND).apply {
                 type = mimeType
                 putExtra(Intent.EXTRA_STREAM, accessibleUri)
-                flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                // Receivers pick the name up from one of these; the ClipData label is what
+                // most file managers and cloud apps prefill their "save as" field with.
+                putExtra(Intent.EXTRA_TITLE, displayName)
+                putExtra(Intent.EXTRA_SUBJECT, displayName)
+                clipData = android.content.ClipData.newUri(
+                    context.contentResolver,
+                    displayName,
+                    accessibleUri
+                )
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }
             val chooser = Intent.createChooser(intent, title).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
@@ -225,7 +249,12 @@ object FileOpener {
      * 
      * NOTE: This is a suspend function that performs I/O on Dispatchers.IO to prevent ANR.
      */
-    private suspend fun getAccessibleUri(context: Context, uri: Uri, extension: String): Uri = withContext(Dispatchers.IO) {
+    private suspend fun getAccessibleUri(
+        context: Context,
+        uri: Uri,
+        extension: String,
+        preferredName: String? = null
+    ): Uri = withContext(Dispatchers.IO) {
         // If it's already a FileProvider URI from our app, return as-is
         if (uri.authority == "${context.packageName}.provider") {
             return@withContext uri
@@ -244,7 +273,7 @@ object FileOpener {
         // For content:// URIs, always copy to cache for reliability
         // This ensures the receiving app (even our own app) can access the file
         if (uri.scheme == "content") {
-            val cachedFile = copyToCache(context, uri, extension)
+            val cachedFile = copyToCache(context, uri, extension, preferredName)
             if (cachedFile != null) {
                 return@withContext FileProvider.getUriForFile(context, "${context.packageName}.provider", cachedFile)
             }
@@ -260,7 +289,12 @@ object FileOpener {
      * NOTE: This function is called from within a withContext(Dispatchers.IO) block,
      * so it runs on the IO dispatcher.
      */
-    private fun copyToCache(context: Context, uri: Uri, extension: String): File? {
+    private fun copyToCache(
+        context: Context,
+        uri: Uri,
+        extension: String,
+        preferredName: String? = null
+    ): File? {
         return try {
             val cacheDir = File(context.cacheDir, CACHE_DIR_NAME)
             if (!cacheDir.exists()) {
@@ -270,7 +304,22 @@ object FileOpener {
             // Clean old cached files (older than 1 hour)
             cleanOldCachedFiles(cacheDir)
             
-            val cachedFile = File(cacheDir, "open_${System.currentTimeMillis()}.$extension")
+            // The copy carries the document's own name: whoever receives it shows that name
+            // rather than a cache file name.
+            val name = (preferredName ?: displayNameOf(context, uri))
+                ?.replace(Regex("""[\\/:*?"<>|]"""), "_")
+                ?.trim()
+                ?.takeIf { it.isNotBlank() }
+            val cachedFile = if (name != null) {
+                val withExtension = if (name.endsWith(".$extension", ignoreCase = true)) {
+                    name
+                } else {
+                    "$name.$extension"
+                }
+                File(cacheDir, withExtension).also { if (it.exists()) it.delete() }
+            } else {
+                File(cacheDir, "open_${System.currentTimeMillis()}.$extension")
+            }
             
             val inputStream = context.contentResolver.openInputStream(uri)
                 ?: throw IllegalArgumentException("Unable to open input stream for URI: $uri")
@@ -285,6 +334,28 @@ object FileOpener {
                 cachedFile
             } else {
                 null
+            }
+        } catch (e: Exception) {
+            null
+        }
+    }
+    
+    /**
+     * Ask the provider what the file is called, so a shared copy keeps its name.
+     */
+    private fun displayNameOf(context: Context, uri: Uri): String? {
+        return try {
+            when (uri.scheme) {
+                "file" -> File(uri.path ?: return null).name
+                else -> context.contentResolver.query(
+                    uri,
+                    arrayOf(android.provider.OpenableColumns.DISPLAY_NAME),
+                    null,
+                    null,
+                    null
+                )?.use { cursor ->
+                    if (cursor.moveToFirst()) cursor.getString(0) else null
+                }
             }
         } catch (e: Exception) {
             null

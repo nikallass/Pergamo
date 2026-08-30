@@ -234,6 +234,13 @@
     <string name="settings_section_support">Support</string>
     <string name="settings_github">Source code on GitHub</string>
     <string name="settings_github_subtitle">Issues, ideas and the code of this fork</string>
+    <string name="review_fork_title">Enjoy this fork?</string>
+    <string name="review_fork_message">This is a community fork of PDF Toolkit. If it does the job for you, a star on GitHub helps — and issues and ideas are welcome there too.</string>
+    <string name="review_star_fork">Star the fork</string>
+    <string name="review_maybe_later">Maybe later</string>
+    <string name="review_share_app">Share app</string>
+    <string name="review_view_releases">View releases</string>
+    <string name="review_share_text">Check out this PDF Toolkit fork, a free and open source PDF tool: %1$s</string>
     <string name="settings_section_about">About</string>
     <string name="settings_section_language">Language</string>
     <string name="settings_compression_quality">Default Compression Quality</string>

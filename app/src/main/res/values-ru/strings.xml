@@ -234,6 +234,13 @@
     <string name="settings_section_support">Поддержка</string>
     <string name="settings_github">Исходный код на GitHub</string>
     <string name="settings_github_subtitle">Проблемы, идеи и код этого форка</string>
+    <string name="review_fork_title">Нравится этот форк?</string>
+    <string name="review_fork_message">Это форк PDF Toolkit. Если он вам пригодился — поставьте звезду на GitHub, там же можно оставить идеи и сообщить о проблемах.</string>
+    <string name="review_star_fork">Звезда форку</string>
+    <string name="review_maybe_later">Позже</string>
+    <string name="review_share_app">Поделиться приложением</string>
+    <string name="review_view_releases">Релизы</string>
+    <string name="review_share_text">Попробуйте этот форк PDF Toolkit — бесплатный PDF-инструмент с открытым кодом: %1$s</string>
     <string name="settings_section_about">О</string>
     <string name="settings_section_language">Язык</string>
     <string name="settings_compression_quality">Качество сжатия по умолчанию</string>

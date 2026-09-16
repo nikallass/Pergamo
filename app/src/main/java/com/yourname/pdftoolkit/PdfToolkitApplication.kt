@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 /**
- * Application class for PDF Toolkit.
+ * Application class for Pergamo.
  * Initializes PdfBox-Android on startup and manages cache cleanup.
  */
 class PdfToolkitApplication : Application() {

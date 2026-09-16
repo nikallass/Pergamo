@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App Name -->
-    <string name="app_name">PDF Toolkit</string>
+    <string name="app_name">Pergamo</string>
 
     <!-- Common Actions -->
     <string name="action_add">Qo\'shish</string>
@@ -43,7 +43,7 @@
     <string name="cd_compression_quality">Siqish sifati</string>
 
     <!-- Home Screen -->
-    <string name="home_title">PDF Toolkit</string>
+    <string name="home_title">Pergamo</string>
     <string name="home_subtitle">Kuchli PDF va rasm asboblari.</string>
     <string name="fab_open_pdf">PDF-ni oching</string>
 
@@ -241,8 +241,8 @@
     <string name="settings_clear_cache">Kesh tozalansinmi?</string>
     <string name="settings_clear_cache_message">Bu vaqtinchalik fayllar va keshlangan ma\'lumotlarni o\'chiradi. Saqlangan PDF-fayllaringizga ta\'sir qilmaydi.</string>
     <string name="settings_cache_cleared">Kesh muvaffaqiyatli tozalandi</string>
-    <string name="settings_about_title">PDF Toolkit haqida</string>
-    <string name="settings_about_description">PDF Toolkit - bu PDF hujjatlarini tez va samarali boshqarishga yordam beradigan kuchli, oflayn PDF vositasi.</string>
+    <string name="settings_about_title">Pergamo haqida</string>
+    <string name="settings_about_description">Pergamo - bu PDF hujjatlarini tez va samarali boshqarishga yordam beradigan kuchli, oflayn PDF vositasi.</string>
     <string name="settings_about_features">Xususiyatlari:</string>
     <string name="settings_about_feature_1">PDF-fayllarni birlashtirish, ajratish, siqish</string>
     <string name="settings_about_feature_2">Tasvirlarga/rasmlarga aylantirish</string>
@@ -253,9 +253,9 @@
     <string name="settings_about_build">Qurilish</string>
     <string name="settings_about_made_with">bilan qilingan</string>
     <string name="settings_about_kotlin_compose">Kotlin &amp; Jetpack Compose</string>
-    <string name="settings_app_name">PDF Toolkit</string>
+    <string name="settings_app_name">Pergamo</string>
     <string name="settings_made_with_love">Samaradorlik uchun ❤️ bilan yaratilgan</string>
-    <string name="settings_copyright">© 2026 PDF Toolkit</string>
+    <string name="settings_copyright">© 2026 Pergamo</string>
     <string name="settings_select_language">Tilni tanlang</string>
     <string name="settings_language_changed">Til o\'zgartirildi</string>
 
@@ -283,7 +283,7 @@
 
     <!-- Feature Request -->
     <string name="feature_request_title">Xususiyatni so\'rash</string>
-    <string name="feature_request_description">PDF Toolkit\'ni yaxshilashga yordam berish uchun fikringizni o\'rtoqlashing!</string>
+    <string name="feature_request_description">Pergamo\'ni yaxshilashga yordam berish uchun fikringizni o\'rtoqlashing!</string>
     <string name="feature_request_category">Turkum</string>
     <string name="feature_request_category_feature">Xususiyat</string>
     <string name="feature_request_category_improvement">Yaxshilash</string>
@@ -293,7 +293,7 @@
     <string name="feature_request_placeholder">Qaysi xususiyatni ko\'rishni xohlaysiz?</string>
 
     <!-- Bug Report -->
-    <string name="bug_report_subject">[Xatolik hisoboti] PDF Toolkit</string>
+    <string name="bug_report_subject">[Xatolik hisoboti] Pergamo</string>
     <string name="bug_report_template">Xato tavsifi:\n[Iltimos, duch kelgan muammoni tavsiflab bering]\n\nKo‘paytirish bosqichlari:\n1. \n2. \n3. \n\nKutilayotgan xatti-harakatlar:\n[Nima bo‘lishini kutgan edingiz?]\n\nHaqiqiy xatti-harakatlar:\n[Aslida nima bo‘ldi?]</string>
 
     <!-- Error Messages -->

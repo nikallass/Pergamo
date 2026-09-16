@@ -587,7 +587,7 @@ fun PrintImpositionStudioScreen(
         ResultDialog(
             isSuccess = true,
             title = "Export Complete!",
-            message = "Imposed PDF successfully saved to Documents/PDF Toolkit:\n${uiState.exportedName ?: uiState.exportedFile?.name}",
+            message = "Imposed PDF successfully saved to Documents/Pergamo:\n${uiState.exportedName ?: uiState.exportedFile?.name}",
             onDismiss = { viewModel.clearExportResult() },
             onAction = {
                 val uri = uiState.exportedUri

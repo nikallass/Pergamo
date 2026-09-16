@@ -456,7 +456,7 @@ class PdfCompressor {
             // Clean Document Information properties
             val info = document.documentInformation
             info.creator = null
-            info.producer = "PDF Toolkit"
+            info.producer = "Pergamo"
             info.author = null
             info.title = null
             info.subject = null

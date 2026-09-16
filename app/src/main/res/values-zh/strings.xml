@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
 
-    <string name="app_name">PDF Toolkit</string>
+    <string name="app_name">Pergamo</string>
 
 
     <string name="action_add">添加</string>
@@ -43,7 +43,7 @@
     <string name="cd_compression_quality">压缩质量</string>
 
 
-    <string name="home_title">PDF Toolkit</string>
+    <string name="home_title">Pergamo</string>
     <string name="home_subtitle">所有PDF和图像工具尽在一处</string>
     <string name="fab_open_pdf">打开PDF</string>
 
@@ -237,8 +237,8 @@
     <string name="settings_clear_cache">清除缓存？</string>
     <string name="settings_clear_cache_message">这将删除临时文件和缓存数据。您保存的PDF不会受影响。</string>
     <string name="settings_cache_cleared">缓存清除成功</string>
-    <string name="settings_about_title">关于PDF Toolkit</string>
-    <string name="settings_about_description">PDF Toolkit是一款强大的离线PDF工具，可帮助您快速高效地管理PDF文档。</string>
+    <string name="settings_about_title">关于Pergamo</string>
+    <string name="settings_about_description">Pergamo是一款强大的离线PDF工具，可帮助您快速高效地管理PDF文档。</string>
     <string name="settings_about_features">功能：</string>
     <string name="settings_about_feature_1">合并、拆分、压缩PDF</string>
     <string name="settings_about_feature_2">与图片相互转换</string>
@@ -249,9 +249,9 @@
     <string name="settings_about_build">构建版本</string>
     <string name="settings_about_made_with">使用</string>
     <string name="settings_about_kotlin_compose">Kotlin和Jetpack Compose</string>
-    <string name="settings_app_name">PDF Toolkit</string>
+    <string name="settings_app_name">Pergamo</string>
     <string name="settings_made_with_love">用❤️打造，助您高效工作</string>
-    <string name="settings_copyright">© 2026 PDF Toolkit</string>
+    <string name="settings_copyright">© 2026 Pergamo</string>
     <string name="settings_select_language">选择语言</string>
     <string name="settings_language_changed">语言已更改</string>
 
@@ -279,7 +279,7 @@
 
 
     <string name="feature_request_title">功能请求</string>
-    <string name="feature_request_description">分享您的想法，帮助我们改进PDF Toolkit！</string>
+    <string name="feature_request_description">分享您的想法，帮助我们改进Pergamo！</string>
     <string name="feature_request_category">类别</string>
     <string name="feature_request_category_feature">功能</string>
     <string name="feature_request_category_improvement">改进</string>
@@ -289,7 +289,7 @@
     <string name="feature_request_placeholder">您希望看到什么功能？</string>
 
 
-    <string name="bug_report_subject">[错误报告] PDF Toolkit</string>
+    <string name="bug_report_subject">[错误报告] Pergamo</string>
     <string name="bug_report_template">错误描述：\n[请描述您遇到的问题]\n\n重现步骤：\n1. \n2. \n3. \n\n预期行为：\n[您期望发生什么？]\n\n实际行为：\n[实际发生了什么？]</string>
 
 

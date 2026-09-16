@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App Name -->
-    <string name="app_name">PDF Toolkit</string>
+    <string name="app_name">Pergamo</string>
 
     <!-- Common Actions -->
     <string name="action_add">Goş</string>
@@ -43,7 +43,7 @@
     <string name="cd_compression_quality">Gysyş hili</string>
 
     <!-- Home Screen -->
-    <string name="home_title">PDF Toolkit</string>
+    <string name="home_title">Pergamo</string>
     <string name="home_subtitle">Ähli PDF &amp; şekil gurallary bir ýerde</string>
     <string name="fab_open_pdf">PDF açyň</string>
 
@@ -241,8 +241,8 @@
     <string name="settings_clear_cache">Keş arassala?</string>
     <string name="settings_clear_cache_message">Bu wagtlaýyn faýllary we keş görnüşindäki maglumatlary ýok eder. Saklanan PDF-leriňize täsir etmez.</string>
     <string name="settings_cache_cleared">Keş üstünlikli arassalandy</string>
-    <string name="settings_about_title">PDF Toolkit hakda</string>
-    <string name="settings_about_description">PDF Toolkit, PDF resminamalaryny çalt we netijeli dolandyrmaga kömek edýän güýçli, awtonom PDF guraldyr.</string>
+    <string name="settings_about_title">Pergamo hakda</string>
+    <string name="settings_about_description">Pergamo, PDF resminamalaryny çalt we netijeli dolandyrmaga kömek edýän güýçli, awtonom PDF guraldyr.</string>
     <string name="settings_about_features">Aýratynlyklary:</string>
     <string name="settings_about_feature_1">PDF-leri birleşdirmek, bölmek, gysmak</string>
     <string name="settings_about_feature_2">Suratlara öwüriň</string>
@@ -253,9 +253,9 @@
     <string name="settings_about_build">Gurmak</string>
     <string name="settings_about_made_with">Bilen ýasaldy</string>
     <string name="settings_about_kotlin_compose">Kotlin &amp; Jetpack Compose</string>
-    <string name="settings_app_name">PDF Toolkit</string>
+    <string name="settings_app_name">Pergamo</string>
     <string name="settings_made_with_love">Söýgü bilen ýasaldy</string>
-    <string name="settings_copyright">© 2026 PDF Toolkit</string>
+    <string name="settings_copyright">© 2026 Pergamo</string>
     <string name="settings_select_language">Dil saýlaň</string>
     <string name="settings_language_changed">Dil üýtgedi</string>
 
@@ -283,7 +283,7 @@
 
     <!-- Feature Request -->
     <string name="feature_request_title">Aýratynlyk soraň</string>
-    <string name="feature_request_description">PDF Toolkit-i gowulaşdyrmak üçin pikiriňizi paýlaşyň!</string>
+    <string name="feature_request_description">Pergamo-i gowulaşdyrmak üçin pikiriňizi paýlaşyň!</string>
     <string name="feature_request_category">Kategoriýa</string>
     <string name="feature_request_category_feature">Aýratynlyk</string>
     <string name="feature_request_category_improvement">Gowulaşmak</string>
@@ -293,7 +293,7 @@
     <string name="feature_request_placeholder">Haýsy aýratynlygy görmek isleýärsiňiz?</string>
 
     <!-- Bug Report -->
-    <string name="bug_report_subject">[Bug hasabaty] PDF Toolkit</string>
+    <string name="bug_report_subject">[Bug hasabaty] Pergamo</string>
     <string name="bug_report_template">Bugalňyşlygyň beýany: \n [Duşuşan meseläňizi suratlandyrmagyňyzy haýyş edýäris] \n \n Köpeltmek üçin ädimler: \n1. \n2. \n3. \n \n Garaşylýan özüni alyp baryş: \n [Näme bolmagyna garaşdyňyz?] \n \n Hakyky özüni alyp baryş: \n [Aslynda näme boldy?]</string>
 
     <!-- Error Messages -->

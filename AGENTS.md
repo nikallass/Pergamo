@@ -1,4 +1,4 @@
-# Agent Guidelines (AI-ready) — PDF Toolkit
+# Agent Guidelines (AI-ready) — Pergamo (fork of PDF Toolkit)
 
 This project is an Android app with multiple product flavors (Play Store / F-Droid / Open Source). Use this file as the **source of truth** for how to build, release, and keep F-Droid metadata working in CI.
 

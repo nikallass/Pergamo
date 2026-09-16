@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App Name -->
-    <string name="app_name">PDF Toolkit</string>
+    <string name="app_name">Pergamo</string>
 
     <!-- Common Actions -->
     <string name="action_add">Tambah</string>
@@ -43,7 +43,7 @@
     <string name="cd_compression_quality">Kualitas Kompresi</string>
 
     <!-- Home Screen -->
-    <string name="home_title">PDF Toolkit</string>
+    <string name="home_title">Pergamo</string>
     <string name="home_subtitle">Semua file PDF &amp; alat gambar di satu tempat</string>
     <string name="fab_open_pdf">Buka PDF</string>
 
@@ -241,8 +241,8 @@
     <string name="settings_clear_cache">Hapus Tembolok?</string>
     <string name="settings_clear_cache_message">Ini akan menghapus file-file sementara dan data cache. PDF Anda yang disimpan tidak akan terpengaruh.</string>
     <string name="settings_cache_cleared">Cache berhasil dibersihkan</string>
-    <string name="settings_about_title">Tentang PDF Toolkit</string>
-    <string name="settings_about_description">PDF Toolkit adalah alat PDF offline yang kuat yang membantu Anda mengelola dokumen PDF dengan cepat dan efisien.</string>
+    <string name="settings_about_title">Tentang Pergamo</string>
+    <string name="settings_about_description">Pergamo adalah alat PDF offline yang kuat yang membantu Anda mengelola dokumen PDF dengan cepat dan efisien.</string>
     <string name="settings_about_features">Fitur:</string>
     <string name="settings_about_feature_1">Gabungkan, Pisahkan, Kompres PDF</string>
     <string name="settings_about_feature_2">Konversi ke/dari gambar</string>
@@ -253,9 +253,9 @@
     <string name="settings_about_build">Membangun</string>
     <string name="settings_about_made_with">Dibuat dengan</string>
     <string name="settings_about_kotlin_compose">Kotlin &amp; Jetpack Compose</string>
-    <string name="settings_app_name">PDF Toolkit</string>
+    <string name="settings_app_name">Pergamo</string>
     <string name="settings_made_with_love">Dibuat dengan ❤️ untuk produktivitas</string>
-    <string name="settings_copyright">© 2026 PDF Toolkit</string>
+    <string name="settings_copyright">© 2026 Pergamo</string>
     <string name="settings_select_language">Pilih Bahasa</string>
     <string name="settings_language_changed">Bahasa berubah</string>
 
@@ -283,7 +283,7 @@
 
     <!-- Feature Request -->
     <string name="feature_request_title">Minta Fitur</string>
-    <string name="feature_request_description">Bagikan ide Anda untuk membantu kami meningkatkan PDF Toolkit!</string>
+    <string name="feature_request_description">Bagikan ide Anda untuk membantu kami meningkatkan Pergamo!</string>
     <string name="feature_request_category">Kategori</string>
     <string name="feature_request_category_feature">Fitur</string>
     <string name="feature_request_category_improvement">Peningkatan</string>
@@ -293,7 +293,7 @@
     <string name="feature_request_placeholder">Fitur apa yang ingin Anda lihat?</string>
 
     <!-- Bug Report -->
-    <string name="bug_report_subject">[Laporan Bug] PDF Toolkit</string>
+    <string name="bug_report_subject">[Laporan Bug] Pergamo</string>
     <string name="bug_report_template">Deskripsi Bug:\n[Tolong jelaskan masalah yang Anda temui]\n\nLangkah-Langkah untuk Mereproduksi:\n1. \n2. \n3. \n\nPerilaku yang Diharapkan:\n[Apa yang Anda perkirakan akan terjadi?]\n\nPerilaku Sebenarnya:\n[Apa yang sebenarnya terjadi?]</string>
 
     <!-- Error Messages -->

@@ -45,7 +45,7 @@ object FileOpener {
                 flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK
             }
             
-            // Create chooser - include our own app so user can view in PDF Toolkit
+            // Create chooser - include our own app so user can view in Pergamo
             val chooser = Intent.createChooser(intent, "Open PDF with...")
             chooser.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             

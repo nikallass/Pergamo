@@ -138,7 +138,7 @@ private fun IntroSection() {
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
-                text = "PDF Toolkit is built with open source software",
+                text = "Pergamo is built with open source software",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
@@ -280,13 +280,13 @@ private fun AboutSection() {
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
-                text = "About PDF Toolkit",
+                text = "About Pergamo",
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onTertiaryContainer
             )
             Text(
-                text = "PDF Toolkit is also open source and available under the Apache License 2.0.",
+                text = "Pergamo is also open source and available under the Apache License 2.0.",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onTertiaryContainer
             )

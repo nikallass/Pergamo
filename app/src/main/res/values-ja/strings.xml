@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App Name -->
-    <string name="app_name">PDF Toolkit</string>
+    <string name="app_name">Pergamo</string>
 
     <!-- Common Actions -->
     <string name="action_add">追加</string>
@@ -43,7 +43,7 @@
     <string name="cd_compression_quality">圧縮品質</string>
 
     <!-- Home Screen -->
-    <string name="home_title">PDF Toolkit</string>
+    <string name="home_title">Pergamo</string>
     <string name="home_subtitle">すべての PDF と画像ツールを 1 か所にまとめた</string>
     <string name="fab_open_pdf">PDFを開く</string>
 
@@ -241,8 +241,8 @@
     <string name="settings_clear_cache">キャッシュをクリアしますか?</string>
     <string name="settings_clear_cache_message">これにより、一時ファイルとキャッシュされたデータが削除されます。保存した PDF は影響を受けません。</string>
     <string name="settings_cache_cleared">キャッシュが正常にクリアされました</string>
-    <string name="settings_about_title">PDF Toolkit について</string>
-    <string name="settings_about_description">PDF Toolkit は、PDF ドキュメントを迅速かつ効率的に管理できる強力なオフライン PDF ツールです。</string>
+    <string name="settings_about_title">Pergamo について</string>
+    <string name="settings_about_description">Pergamo は、PDF ドキュメントを迅速かつ効率的に管理できる強力なオフライン PDF ツールです。</string>
     <string name="settings_about_features">特徴：</string>
     <string name="settings_about_feature_1">PDF の結合、分割、圧縮</string>
     <string name="settings_about_feature_2">画像への変換/画像からの変換</string>
@@ -253,9 +253,9 @@
     <string name="settings_about_build">ビルド</string>
     <string name="settings_about_made_with">で作られました</string>
     <string name="settings_about_kotlin_compose">Kotlin とJetpack Compose</string>
-    <string name="settings_app_name">PDF Toolkit</string>
+    <string name="settings_app_name">Pergamo</string>
     <string name="settings_made_with_love">生産性を高める❤️で作られています</string>
-    <string name="settings_copyright">© 2026 PDF Toolkit</string>
+    <string name="settings_copyright">© 2026 Pergamo</string>
     <string name="settings_select_language">言語の選択</string>
     <string name="settings_language_changed">言語が変更されました</string>
 
@@ -283,7 +283,7 @@
 
     <!-- Feature Request -->
     <string name="feature_request_title">機能をリクエストする</string>
-    <string name="feature_request_description">PDF Toolkit の改善に役立つアイデアを共有してください。</string>
+    <string name="feature_request_description">Pergamo の改善に役立つアイデアを共有してください。</string>
     <string name="feature_request_category">カテゴリ</string>
     <string name="feature_request_category_feature">特徴</string>
     <string name="feature_request_category_improvement">改善</string>
@@ -293,7 +293,7 @@
     <string name="feature_request_placeholder">どのような機能が欲しいですか?</string>
 
     <!-- Bug Report -->
-    <string name="bug_report_subject">[バグレポート] PDF Toolkit</string>
+    <string name="bug_report_subject">[バグレポート] Pergamo</string>
     <string name="bug_report_template">バグの説明:\n[発生した問題について説明してください]\n\n再現手順:\n1. \n2. \n3. \n\n期待される動作:\n[何が起こると予想していましたか?]\n\n実際の動作:\n[実際には何が起こりましたか?]</string>
 
     <!-- Error Messages -->

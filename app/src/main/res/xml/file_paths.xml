@@ -8,6 +8,6 @@
     <!-- External storage (legacy support) -->
     <external-path name="external_files" path="." />
     <!-- Output folder for saved PDFs -->
-    <external-files-path name="output_folder" path="Documents/PDF Toolkit" />
+    <external-files-path name="output_folder" path="Documents/Pergamo" />
 </paths>
 

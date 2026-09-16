@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App Name -->
-    <string name="app_name">PDF Toolkit</string>
+    <string name="app_name">Pergamo</string>
 
     <!-- Common Actions -->
     <string name="action_add">Добавить</string>
@@ -43,7 +43,7 @@
     <string name="cd_compression_quality">Качество сжатия</string>
 
     <!-- Home Screen -->
-    <string name="home_title">PDF Toolkit</string>
+    <string name="home_title">Pergamo</string>
     <string name="home_subtitle">Мощные утилиты обработки PDF и инструментов для документов.</string>
     <string name="fab_open_pdf">Открыть PDF</string>
 
@@ -235,12 +235,12 @@
     <string name="settings_github">Исходный код на GitHub</string>
     <string name="settings_github_subtitle">Проблемы, идеи и код этого форка</string>
     <string name="review_fork_title">Нравится этот форк?</string>
-    <string name="review_fork_message">Это форк PDF Toolkit. Если он вам пригодился — поставьте звезду на GitHub, там же можно оставить идеи и сообщить о проблемах.</string>
+    <string name="review_fork_message">Pergamo — это форк PDF Toolkit. Если он вам пригодился — поставьте звезду на GitHub, там же можно оставить идеи и сообщить о проблемах.</string>
     <string name="review_star_fork">Звезда форку</string>
     <string name="review_maybe_later">Позже</string>
     <string name="review_share_app">Поделиться приложением</string>
     <string name="review_view_releases">Релизы</string>
-    <string name="review_share_text">Попробуйте этот форк PDF Toolkit — бесплатный PDF-инструмент с открытым кодом: %1$s</string>
+    <string name="review_share_text">Попробуйте Pergamo — бесплатный PDF-инструмент с открытым кодом: %1$s</string>
     <string name="settings_section_about">О</string>
     <string name="settings_section_language">Язык</string>
     <string name="settings_compression_quality">Качество сжатия по умолчанию</string>
@@ -262,8 +262,8 @@
     <string name="settings_clear_cache">Очистить кэш?</string>
     <string name="settings_clear_cache_message">Это приведет к удалению временных файлов и кэшированных данных. Ваши сохраненные PDF-файлы не будут затронуты.</string>
     <string name="settings_cache_cleared">Кэш успешно очищен</string>
-    <string name="settings_about_title">О PDF Toolkit</string>
-    <string name="settings_about_description">PDF Toolkit — это мощный автономный инструмент PDF, который помогает быстро и эффективно управлять PDF-документами.</string>
+    <string name="settings_about_title">О Pergamo</string>
+    <string name="settings_about_description">Pergamo — это мощный автономный инструмент PDF, который помогает быстро и эффективно управлять PDF-документами.</string>
     <string name="settings_about_features">Функции:</string>
     <string name="settings_about_feature_1">Объединение, разделение, сжатие PDF-файлов</string>
     <string name="settings_about_feature_2">Преобразование в/из изображений</string>
@@ -274,9 +274,9 @@
     <string name="settings_about_build">Сборка</string>
     <string name="settings_about_made_with">Сделано с</string>
     <string name="settings_about_kotlin_compose">Kotlin &amp; Jetpack Compose</string>
-    <string name="settings_app_name">PDF Toolkit</string>
+    <string name="settings_app_name">Pergamo</string>
     <string name="settings_made_with_love">Сделано с ❤️ для продуктивности</string>
-    <string name="settings_copyright">© 2026 PDF Toolkit</string>
+    <string name="settings_copyright">© 2026 Pergamo</string>
     <string name="settings_select_language">Выберите язык</string>
     <string name="settings_language_changed">Язык изменен</string>
 
@@ -304,7 +304,7 @@
 
     <!-- Feature Request -->
     <string name="feature_request_title">Запросить функцию</string>
-    <string name="feature_request_description">Поделитесь своей идеей, чтобы помочь нам улучшить PDF Toolkit!</string>
+    <string name="feature_request_description">Поделитесь своей идеей, чтобы помочь нам улучшить Pergamo!</string>
     <string name="feature_request_category">Категория</string>
     <string name="feature_request_category_feature">Особенность</string>
     <string name="feature_request_category_improvement">Улучшение</string>
@@ -314,7 +314,7 @@
     <string name="feature_request_placeholder">Какую функцию вы хотели бы видеть?</string>
 
     <!-- Bug Report -->
-    <string name="bug_report_subject">[Отчет об ошибке] PDF Toolkit</string>
+    <string name="bug_report_subject">[Отчет об ошибке] Pergamo</string>
     <string name="bug_report_template">Описание ошибки:\n[Опишите проблему, с которой вы столкнулись]\n\nШаги по воспроизведению:\n1. \n2. \n3. \n\nОжидаемое поведение:\n[Чего вы ожидали?]\n\nФактическое поведение:\n[Что произошло на самом деле?]</string>
 
     <!-- Error Messages -->

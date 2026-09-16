@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App Name -->
-    <string name="app_name">PDF Toolkit</string>
+    <string name="app_name">Pergamo</string>
 
     <!-- Common Actions -->
     <string name="action_add">Eklemek</string>
@@ -43,7 +43,7 @@
     <string name="cd_compression_quality">Sıkıştırma Kalitesi</string>
 
     <!-- Home Screen -->
-    <string name="home_title">PDF Toolkit</string>
+    <string name="home_title">Pergamo</string>
     <string name="home_subtitle">Tüm PDF\'leriniz ve Görüntü araçları tek bir yerde</string>
     <string name="fab_open_pdf">PDF\'yi aç</string>
 
@@ -241,8 +241,8 @@
     <string name="settings_clear_cache">Önbellek temizlensin mi?</string>
     <string name="settings_clear_cache_message">Bu, geçici dosyaları ve önbelleğe alınmış verileri siler. Kaydedilen PDF\'leriniz etkilenmeyecektir.</string>
     <string name="settings_cache_cleared">Önbellek başarıyla temizlendi</string>
-    <string name="settings_about_title">PDF Toolkit Hakkında</string>
-    <string name="settings_about_description">PDF Toolkit, PDF belgelerini hızlı ve verimli bir şekilde yönetmenize yardımcı olan güçlü, çevrimdışı bir PDF aracıdır.</string>
+    <string name="settings_about_title">Pergamo Hakkında</string>
+    <string name="settings_about_description">Pergamo, PDF belgelerini hızlı ve verimli bir şekilde yönetmenize yardımcı olan güçlü, çevrimdışı bir PDF aracıdır.</string>
     <string name="settings_about_features">Özellikler:</string>
     <string name="settings_about_feature_1">PDF\'leri Birleştir, Böl, Sıkıştır</string>
     <string name="settings_about_feature_2">Görüntülere/görüntülerden dönüştürme</string>
@@ -253,9 +253,9 @@
     <string name="settings_about_build">Derleme</string>
     <string name="settings_about_made_with">İle yapıldı</string>
     <string name="settings_about_kotlin_compose">Kotlin &amp; Jetpack Compose</string>
-    <string name="settings_app_name">PDF Toolkit</string>
+    <string name="settings_app_name">Pergamo</string>
     <string name="settings_made_with_love">Verimlilik için ❤️ ile tasarlandı</string>
-    <string name="settings_copyright">© 2026 PDF Toolkit</string>
+    <string name="settings_copyright">© 2026 Pergamo</string>
     <string name="settings_select_language">Dil Seçiniz</string>
     <string name="settings_language_changed">Dil değiştirildi</string>
 
@@ -283,7 +283,7 @@
 
     <!-- Feature Request -->
     <string name="feature_request_title">Özellik Talep Edin</string>
-    <string name="feature_request_description">PDF Toolkit\'i geliştirmemize yardımcı olmak için fikrinizi paylaşın!</string>
+    <string name="feature_request_description">Pergamo\'i geliştirmemize yardımcı olmak için fikrinizi paylaşın!</string>
     <string name="feature_request_category">Kategori</string>
     <string name="feature_request_category_feature">Özellik</string>
     <string name="feature_request_category_improvement">Gelişim</string>
@@ -293,7 +293,7 @@
     <string name="feature_request_placeholder">Hangi özelliği görmek istersiniz?</string>
 
     <!-- Bug Report -->
-    <string name="bug_report_subject">[Hata Raporu] PDF Toolkit</string>
+    <string name="bug_report_subject">[Hata Raporu] Pergamo</string>
     <string name="bug_report_template">Hata Açıklaması:\n[Lütfen karşılaştığınız sorunu açıklayın]\n\nYeniden Oluşturma Adımları:\n1. \n2. \n3. \n\nBeklenen Davranış:\n[Ne olmasını bekliyordunuz?]\n\nGerçek Davranış:\n[Gerçekte ne oldu?]</string>
 
     <!-- Error Messages -->

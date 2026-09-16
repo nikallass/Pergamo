@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App Name -->
-    <string name="app_name">PDF Toolkit</string>
+    <string name="app_name">Pergamo</string>
 
     <!-- Common Actions -->
     <string name="action_add">Ajouter</string>
@@ -43,7 +43,7 @@
     <string name="cd_compression_quality">Qualité de compression</string>
 
     <!-- Home Screen -->
-    <string name="home_title">PDF Toolkit</string>
+    <string name="home_title">Pergamo</string>
     <string name="home_subtitle">Utilitaires puissants de traitement PDF et outils d\'image.</string>
     <string name="fab_open_pdf">Ouvrir le PDF</string>
 
@@ -241,8 +241,8 @@
     <string name="settings_clear_cache">Vider le cache ?</string>
     <string name="settings_clear_cache_message">Cela supprimera les fichiers temporaires et les données mises en cache. Vos PDF enregistrés ne seront pas affectés.</string>
     <string name="settings_cache_cleared">Cache vidé avec succès</string>
-    <string name="settings_about_title">À propos de PDF Toolkit</string>
-    <string name="settings_about_description">PDF Toolkit est un outil PDF hors ligne puissant qui vous aide à gérer les documents PDF rapidement et efficacement.</string>
+    <string name="settings_about_title">À propos de Pergamo</string>
+    <string name="settings_about_description">Pergamo est un outil PDF hors ligne puissant qui vous aide à gérer les documents PDF rapidement et efficacement.</string>
     <string name="settings_about_features">Caractéristiques:</string>
     <string name="settings_about_feature_1">Fusionner, diviser, compresser des PDF</string>
     <string name="settings_about_feature_2">Convertir vers/depuis des images</string>
@@ -253,9 +253,9 @@
     <string name="settings_about_build">Version</string>
     <string name="settings_about_made_with">Fabriqué avec</string>
     <string name="settings_about_kotlin_compose">Kotlin &amp; Jetpack Compose</string>
-    <string name="settings_app_name">PDF Toolkit</string>
+    <string name="settings_app_name">Pergamo</string>
     <string name="settings_made_with_love">Fabriqué avec ❤️ pour la productivité</string>
-    <string name="settings_copyright">© 2026 PDF Toolkit</string>
+    <string name="settings_copyright">© 2026 Pergamo</string>
     <string name="settings_select_language">Sélectionnez la langue</string>
     <string name="settings_language_changed">Langue modifiée</string>
 
@@ -283,7 +283,7 @@
 
     <!-- Feature Request -->
     <string name="feature_request_title">Demander une fonctionnalité</string>
-    <string name="feature_request_description">Partagez votre idée pour nous aider à améliorer PDF Toolkit !</string>
+    <string name="feature_request_description">Partagez votre idée pour nous aider à améliorer Pergamo !</string>
     <string name="feature_request_category">Catégorie</string>
     <string name="feature_request_category_feature">Fonctionnalité</string>
     <string name="feature_request_category_improvement">Amélioration</string>
@@ -293,7 +293,7 @@
     <string name="feature_request_placeholder">Quelle fonctionnalité aimeriez-vous voir ?</string>
 
     <!-- Bug Report -->
-    <string name="bug_report_subject">[Rapport de bug] PDF Toolkit</string>
+    <string name="bug_report_subject">[Rapport de bug] Pergamo</string>
     <string name="bug_report_template">Description du bug :\n[Veuillez décrire le problème que vous avez rencontré]\n\nÉtapes à reproduire :\n1. \n2. \n3. \n\nComportement attendu :\n[À quoi vous attendiez-vous ?]\n\nComportement réel :\n[Que s\'est-il réellement passé ?]</string>
 
     <!-- Error Messages -->

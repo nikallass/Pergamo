@@ -5,7 +5,7 @@ License: Apache-2.0
 AuthorName: Chaitanya Naidu
 SourceCode: https://github.com/Karna14314/Pdf_Tools
 IssueTracker: https://github.com/Karna14314/Pdf_Tools/issues
-AutoName: PDF Toolkit
+AutoName: Pergamo
 
 RepoType: git
 Repo: https://github.com/Karna14314/Pdf_Tools
@@ -35,7 +35,7 @@ Builds:
       - APP_VERSION_NAME=1.3.210
 
 Description: |-
-  PDF Toolkit is a comprehensive PDF and image manipulation tool for Android.
+  Pergamo is a comprehensive PDF and image manipulation tool for Android.
 
   Features include:
   * Merge multiple PDFs into one

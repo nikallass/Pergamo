@@ -14,11 +14,11 @@ import java.io.OutputStream
 
 /**
  * Manages the app's default output folder for saved PDFs and conversions.
- * Creates a "PDF Toolkit" folder in the device's Documents directory.
+ * Creates a "Pergamo" folder in the device's Documents directory.
  */
 object OutputFolderManager {
     
-    private const val APP_FOLDER_NAME = "PDF Toolkit"
+    private const val APP_FOLDER_NAME = "Pergamo"
     
     /**
      * Get or create the app's output folder.
@@ -141,7 +141,7 @@ object OutputFolderManager {
     
     /**
      * Publish an already-rendered file (e.g. from cache) into the public
-     * Documents/PDF Toolkit folder via MediaStore.
+     * Documents/Pergamo folder via MediaStore.
      * Works under scoped storage (Android 10+) with no storage permission.
      * Returns the MediaStore content URI and final display name, or null.
      */

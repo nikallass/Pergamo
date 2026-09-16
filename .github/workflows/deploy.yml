@@ -320,9 +320,9 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ env.APP_VERSION_NAME }}
-          name: "PDFToolkit v${{ env.APP_VERSION_NAME }}"
+          name: "Pergamo v${{ env.APP_VERSION_NAME }}"
           body: |
-            ## PDF Toolkit v${{ env.APP_VERSION_NAME }} (Build ${{ env.APP_VERSION_CODE }})
+            ## Pergamo v${{ env.APP_VERSION_NAME }} (Build ${{ env.APP_VERSION_CODE }})
             
             ### What's New
             ${{ steps.generate-notes.outputs.release_notes }}
@@ -373,7 +373,7 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "| Detail | Value |" >> $GITHUB_STEP_SUMMARY
           echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
-          echo "| **App** | PDF Toolkit |" >> $GITHUB_STEP_SUMMARY
+          echo "| **App** | Pergamo |" >> $GITHUB_STEP_SUMMARY
           echo "| **Package** | com.yourname.pdftoolkit |" >> $GITHUB_STEP_SUMMARY
           echo "| **Track** | Internal Testing |" >> $GITHUB_STEP_SUMMARY
           echo "| **Version Name** | ${{ env.APP_VERSION_NAME }} |" >> $GITHUB_STEP_SUMMARY

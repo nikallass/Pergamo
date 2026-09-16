@@ -125,12 +125,12 @@ class PrintImpositionViewModel(application: Application) : AndroidViewModel(appl
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
                     val published = OutputFolderManager.publishFileToPublicFolder(
                         context, tempOut, finalName
-                    ) ?: throw IllegalStateException("Could not save output file in PDF Toolkit folder")
+                    ) ?: throw IllegalStateException("Could not save output file in Pergamo folder")
                     publishedUri = published.first
                     publishedName = published.second
                 } else {
                     val outputFileResult = OutputFolderManager.createOutputFile(context, finalName)
-                        ?: throw IllegalStateException("Could not create output file in PDF Toolkit folder")
+                        ?: throw IllegalStateException("Could not create output file in Pergamo folder")
                     // Copy to public folder
                     tempOut.inputStream().use { input ->
                         outputFileResult.file.outputStream().use { output ->

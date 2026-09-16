@@ -38,7 +38,7 @@ import java.io.FileOutputStream
 import java.io.IOException
 
 /**
- * Main entry point for the PDF Toolkit app.
+ * Main entry point for the Pergamo app.
  * Handles intent-based PDF opening and sets up navigation.
  * 
  * IMPORTANT: This activity properly handles SAF URIs for Android 10+ compliance.

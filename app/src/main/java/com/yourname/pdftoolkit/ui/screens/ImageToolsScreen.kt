@@ -131,7 +131,7 @@ fun ImageToolsScreen(
                     val contentValues = ContentValues().apply {
                         put(MediaStore.Images.Media.DISPLAY_NAME, "${baseName}.${extension}")
                         put(MediaStore.Images.Media.MIME_TYPE, mimeType)
-                        put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/PDF Toolkit")
+                        put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/Pergamo")
                         put(MediaStore.Images.Media.IS_PENDING, 1)
                     }
                     
@@ -154,7 +154,7 @@ fun ImageToolsScreen(
                 } else {
                     @Suppress("DEPRECATION")
                     val picturesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-                    val appDir = File(picturesDir, "PDF Toolkit")
+                    val appDir = File(picturesDir, "Pergamo")
                     if (!appDir.exists()) appDir.mkdirs()
                     
                     val destFile = File(appDir, "${baseName}.${extension}")
@@ -752,7 +752,7 @@ fun ImageToolsScreen(
                                     )
                                     Spacer(modifier = Modifier.width(12.dp))
                                     Text(
-                                        text = "Processed images will be saved to Pictures/PDF Toolkit folder.",
+                                        text = "Processed images will be saved to Pictures/Pergamo folder.",
                                         style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.onTertiaryContainer
                                     )

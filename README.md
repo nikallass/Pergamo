@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="store_assets/app_icon_512.png" width="120" height="120" alt="PDF Toolkit">
+  <img src="store_assets/app_icon_512.png" width="120" height="120" alt="Pergamo">
 </p>
 
-<h1 align="center">PDF Toolkit</h1>
+<h1 align="center">Pergamo</h1>
 
 <p align="center">
   <strong>A privacy-first, offline PDF utility for Android</strong>
@@ -43,9 +43,9 @@ It is signed with this repository's own key, so it installs alongside, not over,
 
 ---
 
-## 🔱 What this build adds
+## 🔱 What Pergamo adds
 
-This repository builds on the original PDF Toolkit and adds the scanning and navigation work below.
+Pergamo is a fork of the original PDF Toolkit. It adds the scanning and navigation work below.
 
 **Scanner filter, rewritten** — the old colour mode produced a plain photo: grey shadows, ink that
 stayed dark grey. `ScanEnhancer` now estimates the paper colour across the page (a coarse

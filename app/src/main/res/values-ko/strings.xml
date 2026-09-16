@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App Name -->
-    <string name="app_name">PDF Toolkit</string>
+    <string name="app_name">Pergamo</string>
 
     <!-- Common Actions -->
     <string name="action_add">추가하다</string>
@@ -43,7 +43,7 @@
     <string name="cd_compression_quality">압축 품질</string>
 
     <!-- Home Screen -->
-    <string name="home_title">PDF Toolkit</string>
+    <string name="home_title">Pergamo</string>
     <string name="home_subtitle">모든 PDF &amp; 이미지 도구를 한곳에 모아보세요</string>
     <string name="fab_open_pdf">PDF 열기</string>
 
@@ -241,8 +241,8 @@
     <string name="settings_clear_cache">캐시를 지우시겠습니까?</string>
     <string name="settings_clear_cache_message">임시 파일과 캐시된 데이터가 삭제됩니다. 저장된 PDF는 영향을 받지 않습니다.</string>
     <string name="settings_cache_cleared">캐시가 성공적으로 지워졌습니다.</string>
-    <string name="settings_about_title">PDF Toolkit 정보</string>
-    <string name="settings_about_description">PDF Toolkit은 PDF 문서를 빠르고 효율적으로 관리하는 데 도움이 되는 강력한 오프라인 PDF 도구입니다.</string>
+    <string name="settings_about_title">Pergamo 정보</string>
+    <string name="settings_about_description">Pergamo은 PDF 문서를 빠르고 효율적으로 관리하는 데 도움이 되는 강력한 오프라인 PDF 도구입니다.</string>
     <string name="settings_about_features">특징:</string>
     <string name="settings_about_feature_1">PDF 병합, 분할, 압축</string>
     <string name="settings_about_feature_2">이미지로/이미지에서 변환</string>
@@ -253,9 +253,9 @@
     <string name="settings_about_build">빌드</string>
     <string name="settings_about_made_with">다음으로 제작됨</string>
     <string name="settings_about_kotlin_compose">코틀린 &amp; Jetpack Compose</string>
-    <string name="settings_app_name">PDF Toolkit</string>
+    <string name="settings_app_name">Pergamo</string>
     <string name="settings_made_with_love">생산성을 위해 ❤️으로 제작</string>
-    <string name="settings_copyright">© 2026 PDF Toolkit</string>
+    <string name="settings_copyright">© 2026 Pergamo</string>
     <string name="settings_select_language">언어 선택</string>
     <string name="settings_language_changed">언어가 변경됨</string>
 
@@ -283,7 +283,7 @@
 
     <!-- Feature Request -->
     <string name="feature_request_title">기능 요청</string>
-    <string name="feature_request_description">PDF Toolkit을 개선하는 데 도움이 되는 아이디어를 공유해 주세요!</string>
+    <string name="feature_request_description">Pergamo을 개선하는 데 도움이 되는 아이디어를 공유해 주세요!</string>
     <string name="feature_request_category">범주</string>
     <string name="feature_request_category_feature">특징</string>
     <string name="feature_request_category_improvement">개선</string>
@@ -293,7 +293,7 @@
     <string name="feature_request_placeholder">어떤 기능을 보고 싶나요?</string>
 
     <!-- Bug Report -->
-    <string name="bug_report_subject">[버그 리포트] PDF Toolkit</string>
+    <string name="bug_report_subject">[버그 리포트] Pergamo</string>
     <string name="bug_report_template">버그 설명:\n[발생한 문제를 설명해 주세요.]\n\n재현 단계:\n1. \n2. \n3. \n\n예상 동작:\n[무슨 일이 일어날 것으로 예상했나요?]\n\n실제 동작:\n[실제로 무슨 일이 일어났나요?]</string>
 
     <!-- Error Messages -->

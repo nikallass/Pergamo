@@ -259,6 +259,21 @@ object SafUriManager {
      */
     private fun getFileMetadata(context: Context, uri: Uri): Triple<String, Long, String>? {
         return try {
+            // Fast path: direct files (converter/share outputs) have no
+            // content provider, so query() would yield null -> permanent 0B.
+            if (uri.scheme == "file") {
+                val f = uri.path?.let { java.io.File(it) }
+                if (f != null && f.exists()) {
+                    val mime = when (f.extension.lowercase()) {
+                        "pdf" -> "application/pdf"
+                        "docx" -> "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                        "doc" -> "application/msword"
+                        else -> context.contentResolver.getType(uri) ?: "application/octet-stream"
+                    }
+                    return Triple(f.name, f.length(), mime)
+                }
+                return null
+            }
             val mimeType = context.contentResolver.getType(uri) ?: "application/octet-stream"
             
             context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
@@ -280,10 +295,16 @@ object SafUriManager {
                         size = try {
                             context.contentResolver
                                 .openAssetFileDescriptor(uri, "r")
-                                ?.length ?: 0L
+                                ?.use { it.length } ?: 0L
                         } catch (e: Exception) {
                             0L
                         }
+                    }
+
+                    // Last resort: measure by streaming (handles providers
+                    // reporting UNKNOWN_LENGTH / 0, e.g. Downloads)
+                    if (size <= 0) {
+                        size = FileManager.calculateActualFileSize(context, uri)
                     }
                     
                     Triple(name, size, mimeType)
@@ -315,7 +336,18 @@ object SafUriManager {
             val uri = persistedFile.toUri()
 
             if (uri != null && canAccessUri(context, uri)) {
-                accessibleFiles.add(persistedFile)
+                if (persistedFile.size <= 0) {
+                    // Heal entries stored with 0B (provider gave no size at pick time)
+                    val freshSize = getFileMetadata(context, uri)?.second ?: 0L
+                    if (freshSize > 0) {
+                        dao.updateSize(entity.uriString, freshSize)
+                        accessibleFiles.add(persistedFile.copy(size = freshSize))
+                    } else {
+                        accessibleFiles.add(persistedFile)
+                    }
+                } else {
+                    accessibleFiles.add(persistedFile)
+                }
             } else {
                 // Release permission for inaccessible URIs
                 uri?.let { releasePersistablePermission(context, it) }

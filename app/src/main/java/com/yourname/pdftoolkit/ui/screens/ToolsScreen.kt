@@ -154,6 +154,22 @@ fun ToolsScreen(
 
     var hiddenExpanded by remember { mutableStateOf(false) }
     var menuToolId by remember { mutableStateOf<String?>(null) }
+    var searchQuery by remember { mutableStateOf("") }
+    val trimmedQuery = searchQuery.trim()
+    // Derived so typing only recomputes the filtered list instead of
+    // re-running string lookups for every row on each keystroke.
+    val searchResults by remember(trimmedQuery, allTools) {
+        derivedStateOf {
+            if (trimmedQuery.isEmpty()) {
+                emptyList()
+            } else {
+                allTools.filter { tool ->
+                    context.getString(tool.titleResId).contains(trimmedQuery, ignoreCase = true) ||
+                        context.getString(tool.descResId).contains(trimmedQuery, ignoreCase = true)
+                }
+            }
+        }
+    }
 
     val hiddenTools = prefs.hidden.mapNotNull { toolsById[it] }
     val favoriteTools = prefs.favorites.mapNotNull { toolsById[it] }
@@ -205,46 +221,44 @@ fun ToolsScreen(
             )
         }
 
-        if (favoriteTools.isNotEmpty()) {
-            item { SectionHeader(title = stringResource(R.string.category_favorites)) }
-            item {
-                ToolList(
-                    tools = favoriteTools,
-                    prefs = prefs,
-                    menuToolId = menuToolId,
-                    onMenuRequest = { menuToolId = it },
-                    onToolClick = ::openTool,
-                    onToggleFavorite = onToggleFavorite,
-                    onToggleHidden = onToggleHidden
-                )
-            }
+        // Search
+        item {
+            OutlinedTextField(
+                value = searchQuery,
+                onValueChange = { searchQuery = it },
+                placeholder = { Text(stringResource(R.string.tools_search_hint)) },
+                leadingIcon = {
+                    Icon(Icons.Default.Search, contentDescription = null)
+                },
+                trailingIcon = {
+                    if (searchQuery.isNotEmpty()) {
+                        IconButton(onClick = { searchQuery = "" }) {
+                            Icon(Icons.Default.Close, contentDescription = stringResource(R.string.action_cancel))
+                        }
+                    }
+                },
+                singleLine = true,
+                shape = MaterialTheme.shapes.large,
+                modifier = Modifier.fillMaxWidth()
+            )
         }
 
-        if (recentTools.isNotEmpty()) {
-            item { SectionHeader(title = stringResource(R.string.category_recent)) }
-            item {
-                ToolList(
-                    tools = recentTools,
-                    prefs = prefs,
-                    menuToolId = menuToolId,
-                    onMenuRequest = { menuToolId = it },
-                    onToolClick = ::openTool,
-                    onToggleFavorite = onToggleFavorite,
-                    onToggleHidden = onToggleHidden
-                )
-            }
-        }
-
-        // Categories
-        ToolSection.entries.forEach { section ->
-            val sectionTools = allTools.filter {
-                it.section == section && it.id !in prefs.hidden
-            }
-            if (sectionTools.isNotEmpty()) {
-                item { SectionHeader(title = getSectionTitle(section)) }
+        if (trimmedQuery.isNotEmpty()) {
+            // Search results replace the sections while searching
+            item { SectionHeader(title = stringResource(R.string.tools_search_results)) }
+            if (searchResults.isEmpty()) {
+                item {
+                    Text(
+                        text = stringResource(R.string.tools_search_empty),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    )
+                }
+            } else {
                 item {
                     ToolList(
-                        tools = sectionTools,
+                        tools = searchResults,
                         prefs = prefs,
                         menuToolId = menuToolId,
                         onMenuRequest = { menuToolId = it },
@@ -254,21 +268,12 @@ fun ToolsScreen(
                     )
                 }
             }
-        }
-
-        // Hidden tools, collapsed until asked for
-        if (hiddenTools.isNotEmpty()) {
-            item {
-                ExpandableSectionHeader(
-                    title = stringResource(R.string.category_hidden, hiddenTools.size),
-                    expanded = hiddenExpanded,
-                    onToggle = { hiddenExpanded = !hiddenExpanded }
-                )
-            }
-            item {
-                AnimatedVisibility(visible = hiddenExpanded) {
+        } else {
+            if (favoriteTools.isNotEmpty()) {
+                item { SectionHeader(title = stringResource(R.string.category_favorites)) }
+                item {
                     ToolList(
-                        tools = hiddenTools,
+                        tools = favoriteTools,
                         prefs = prefs,
                         menuToolId = menuToolId,
                         onMenuRequest = { menuToolId = it },
@@ -276,6 +281,66 @@ fun ToolsScreen(
                         onToggleFavorite = onToggleFavorite,
                         onToggleHidden = onToggleHidden
                     )
+                }
+            }
+
+            if (recentTools.isNotEmpty()) {
+                item { SectionHeader(title = stringResource(R.string.category_recent)) }
+                item {
+                    ToolList(
+                        tools = recentTools,
+                        prefs = prefs,
+                        menuToolId = menuToolId,
+                        onMenuRequest = { menuToolId = it },
+                        onToolClick = ::openTool,
+                        onToggleFavorite = onToggleFavorite,
+                        onToggleHidden = onToggleHidden
+                    )
+                }
+            }
+
+            // Categories
+            ToolSection.entries.forEach { section ->
+                val sectionTools = allTools.filter {
+                    it.section == section && it.id !in prefs.hidden
+                }
+                if (sectionTools.isNotEmpty()) {
+                    item { SectionHeader(title = getSectionTitle(section)) }
+                    item {
+                        ToolList(
+                            tools = sectionTools,
+                            prefs = prefs,
+                            menuToolId = menuToolId,
+                            onMenuRequest = { menuToolId = it },
+                            onToolClick = ::openTool,
+                            onToggleFavorite = onToggleFavorite,
+                            onToggleHidden = onToggleHidden
+                        )
+                    }
+                }
+            }
+
+            // Hidden tools, collapsed until asked for
+            if (hiddenTools.isNotEmpty()) {
+                item {
+                    ExpandableSectionHeader(
+                        title = stringResource(R.string.category_hidden, hiddenTools.size),
+                        expanded = hiddenExpanded,
+                        onToggle = { hiddenExpanded = !hiddenExpanded }
+                    )
+                }
+                item {
+                    AnimatedVisibility(visible = hiddenExpanded) {
+                        ToolList(
+                            tools = hiddenTools,
+                            prefs = prefs,
+                            menuToolId = menuToolId,
+                            onMenuRequest = { menuToolId = it },
+                            onToolClick = ::openTool,
+                            onToggleFavorite = onToggleFavorite,
+                            onToggleHidden = onToggleHidden
+                        )
+                    }
                 }
             }
         }
@@ -545,6 +610,14 @@ fun getAllTools(): List<ToolItem> = listOf(
         section = ToolSection.CREATE,
         screen = Screen.HtmlToPdf
     ),
+    ToolItem(
+        id = "doc_to_pdf",
+        titleResId = R.string.tool_doc_to_pdf,
+        descResId = R.string.desc_doc_to_pdf,
+        icon = Icons.Default.Description,
+        section = ToolSection.CREATE,
+        screen = Screen.DocToPdf
+    ),
 
     // WORK ON THE DOCUMENT
     ToolItem(
@@ -602,6 +675,14 @@ fun getAllTools(): List<ToolItem> = listOf(
         icon = Icons.Default.Delete,
         section = ToolSection.DOCUMENT,
         screen = Screen.Organize
+    ),
+    ToolItem(
+        id = "print_studio",
+        titleResId = R.string.tool_print_studio,
+        descResId = R.string.desc_print_studio,
+        icon = Icons.Default.Print,
+        section = ToolSection.DOCUMENT,
+        screen = Screen.PrintStudio
     ),
 
     // GET SOMETHING OUT OF THE DOCUMENT

@@ -70,6 +70,8 @@ fun getOperationIcon(operationType: OperationType): ImageVector {
         OperationType.OCR -> Icons.Default.TextFields
         OperationType.IMAGE_TOOLS -> Icons.Default.Photo
         OperationType.OPEN_PDF -> Icons.Default.PictureAsPdf
+        OperationType.VIEW_DOC -> Icons.Default.Description
+        OperationType.DOC_TO_PDF -> Icons.Default.PictureAsPdf
         OperationType.OTHER -> Icons.Default.MoreHoriz
     }
 }
@@ -113,11 +115,12 @@ fun HistorySidebar(
     var isLoading by remember { mutableStateOf(true) }
     var showClearConfirmation by remember { mutableStateOf(false) }
     
-    // Load history when sidebar opens
+    // Load history when sidebar opens (viewer opens live in Files history only)
     LaunchedEffect(isOpen) {
         if (isOpen) {
             isLoading = true
             history = HistoryManager.getHistory(context)
+                .filter { it.operationType != OperationType.VIEW_DOC }
             isLoading = false
         }
     }

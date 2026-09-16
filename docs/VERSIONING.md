@@ -37,5 +37,5 @@ When publishing a new release:
 ## Distribution Alignment
 
 - **GitHub Actions (`deploy.yml`):** Reads `APP_VERSION_CODE` and `APP_VERSION_NAME` from `gradle.properties` during checkout. No CLI overrides are applied.
-- **F-Droid (`metadata/com.yourname.pdftoolkit.yml`):** `fdroid checkupdates` parses `gradle.properties` inside Git tags (`UpdateCheckMode: Tags`).
+- **F-Droid (`metadata/ru.dvedev.me.pergamo.yml`):** `fdroid checkupdates` parses `gradle.properties` inside Git tags (`UpdateCheckMode: Tags`).
 - **Fastlane (`fastlane/metadata/android/en-US/changelogs/`):** Release notes are supplied in `changelogs/<versionCode>.txt`.

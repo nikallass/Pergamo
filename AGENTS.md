@@ -12,7 +12,7 @@ This project is an Android app with multiple product flavors (Play Store / F-Dro
 - **Version source of truth (for releases)**: `gradle.properties`
   - `APP_VERSION_CODE`
   - `APP_VERSION_NAME`
-- **F-Droid metadata (app repo copy)**: `metadata/com.yourname.pdftoolkit.yml`
+- **F-Droid metadata (app repo copy)**: `metadata/ru.dvedev.me.pergamo.yml`
 - **F-Droid data repo checkout**: `fdroiddata/` (usually gitignored in this app repo)
   - Real CI for F-Droid runs against the `fdroiddata` repository’s metadata.
 

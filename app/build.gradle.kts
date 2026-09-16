@@ -13,7 +13,7 @@ android {
     ndkVersion = "28.0.12433510"
 
     defaultConfig {
-        applicationId = "com.yourname.pdftoolkit"
+        applicationId = "ru.dvedev.me.pergamo"
         minSdk = 26
         targetSdk = 36
         // Version code and name are read from gradle.properties for F-Droid compatibility

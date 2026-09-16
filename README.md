@@ -9,17 +9,17 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/nikallass/Pdf_Tools/releases/latest">
-    <img src="https://img.shields.io/github/v/release/nikallass/Pdf_Tools?include_prereleases&label=Download%20APK&color=green&logo=android" alt="Download APK">
+  <a href="https://github.com/nikallass/Pergamo/releases/latest">
+    <img src="https://img.shields.io/github/v/release/nikallass/Pergamo?include_prereleases&label=Download%20APK&color=green&logo=android" alt="Download APK">
   </a>
   <a href="LICENSE">
     <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License">
   </a>
-  <a href="https://github.com/nikallass/Pdf_Tools/issues">
-    <img src="https://img.shields.io/github/issues/nikallass/Pdf_Tools?style=flat&color=red" alt="GitHub Issues">
+  <a href="https://github.com/nikallass/Pergamo/issues">
+    <img src="https://img.shields.io/github/issues/nikallass/Pergamo?style=flat&color=red" alt="GitHub Issues">
   </a>
   <img src="https://img.shields.io/badge/Platform-Android-3DDC84?logo=android" alt="Platform">
-  <img src="https://img.shields.io/github/last-commit/nikallass/Pdf_Tools?style=flat&color=orange" alt="Last Commit">
+  <img src="https://img.shields.io/github/last-commit/nikallass/Pergamo?style=flat&color=orange" alt="Last Commit">
 </p>
 
 ---
@@ -27,12 +27,12 @@
 ## 📱 Get it on Android
 
 <p align="center">
-  <a href="https://github.com/nikallass/Pdf_Tools/releases/latest">
+  <a href="https://github.com/nikallass/Pergamo/releases/latest">
     <img src="https://img.shields.io/badge/Download%20APK-GitHub%20Releases-3DDC84?style=for-the-badge&logo=android&logoColor=white" height="40" alt="Download APK">
   </a>
 </p>
 
-1. Open the [latest release](https://github.com/nikallass/Pdf_Tools/releases/latest) and download the `.apk`.
+1. Open the [latest release](https://github.com/nikallass/Pergamo/releases/latest) and download the `.apk`.
 2. Allow installs from your browser or file manager when Android asks.
 3. Open the file and tap **Install**. To update, install the newer APK on top.
 
@@ -162,8 +162,8 @@ All flavors are **privacy-first** with no ads, no analytics, and no proprietary 
 
 ```bash
 # Clone the repository
-git clone https://github.com/nikallass/Pdf_Tools.git
-cd Pdf_Tools
+git clone https://github.com/nikallass/Pergamo.git
+cd Pergamo
 
 # Play Store flavor (ML Kit OCR)
 ./gradlew assemblePlaystoreRelease
@@ -181,9 +181,9 @@ cd Pdf_Tools
 
 | Platform | Link | Notes |
 |----------|------|-------|
-| GitHub Releases | [Download APK](https://github.com/nikallass/Pdf_Tools/releases/latest) | Opensource flavor, manual install |
+| GitHub Releases | [Download APK](https://github.com/nikallass/Pergamo/releases/latest) | Opensource flavor, manual install |
 
-Releases are built and signed by [GitHub Actions](https://github.com/nikallass/Pdf_Tools/actions/workflows/release-apk.yml) from the tagged commit.
+Releases are built and signed by [GitHub Actions](https://github.com/nikallass/Pergamo/actions/workflows/release-apk.yml) from the tagged commit.
 
 ---
 
@@ -199,7 +199,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 **Important:** The F-Droid and opensource flavors must remain free of proprietary dependencies. Any new dependencies must be compatible with the F-Droid inclusion policy.
 
-See [open issues](https://github.com/nikallass/Pdf_Tools/issues) for feature requests and bug reports.
+See [open issues](https://github.com/nikallass/Pergamo/issues) for feature requests and bug reports.
 
 ---
 

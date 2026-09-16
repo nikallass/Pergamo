@@ -1,9 +1,8 @@
 name: Deploy to Play Store & Indus App Store
 
 on:
-  push:
-    branches:
-      - master
+  # Manual only in this repository: the store credentials belong to the original project.
+  # APK releases come from release-apk.yml.
   workflow_dispatch:
 
 # Cancel any in-progress runs for the same branch

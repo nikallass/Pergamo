@@ -9,32 +9,17 @@
 </p>
 
 <p align="center">
-  <a href="https://f-droid.org/en/packages/com.yourname.pdftoolkit/">
-    <img src="https://img.shields.io/badge/F--Droid-Download-blue?logo=f-droid" alt="F-Droid">
-  </a>
-  <a href="https://play.google.com/store/apps/details?id=com.yourname.pdftoolkit">
-    <img src="https://img.shields.io/badge/Play%20Store-Download-green?logo=googleplay" alt="Play Store">
+  <a href="https://github.com/nikallass/Pdf_Tools/releases/latest">
+    <img src="https://img.shields.io/github/v/release/nikallass/Pdf_Tools?include_prereleases&label=Download%20APK&color=green&logo=android" alt="Download APK">
   </a>
   <a href="LICENSE">
     <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License">
   </a>
-  <a href="https://github.com/Karna14314/Pdf_Tools/stargazers">
-    <img src="https://img.shields.io/github/stars/Karna14314/Pdf_Tools?style=flat&color=yellow" alt="GitHub Stars">
-  </a>
-  <a href="https://github.com/Karna14314/Pdf_Tools/forks">
-    <img src="https://img.shields.io/github/forks/Karna14314/Pdf_Tools?style=flat&color=blue" alt="GitHub Forks">
-  </a>
-  <a href="https://github.com/Karna14314/Pdf_Tools/watchers">
-    <img src="https://img.shields.io/github/watchers/Karna14314/Pdf_Tools?style=flat&color=green" alt="GitHub Watchers">
-  </a>
-  <a href="https://github.com/Karna14314/Pdf_Tools/issues">
-    <img src="https://img.shields.io/github/issues/Karna14314/Pdf_Tools?style=flat&color=red" alt="GitHub Issues">
-  </a>
-  <a href="https://github.com/Karna14314/Pdf_Tools/releases">
-    <img src="https://img.shields.io/github/v/release/Karna14314/Pdf_Tools?include_prereleases" alt="Latest Release">
+  <a href="https://github.com/nikallass/Pdf_Tools/issues">
+    <img src="https://img.shields.io/github/issues/nikallass/Pdf_Tools?style=flat&color=red" alt="GitHub Issues">
   </a>
   <img src="https://img.shields.io/badge/Platform-Android-3DDC84?logo=android" alt="Platform">
-  <img src="https://img.shields.io/github/last-commit/Karna14314/Pdf_Tools?style=flat&color=orange" alt="Last Commit">
+  <img src="https://img.shields.io/github/last-commit/nikallass/Pdf_Tools?style=flat&color=orange" alt="Last Commit">
 </p>
 
 ---
@@ -42,33 +27,25 @@
 ## 📱 Get it on Android
 
 <p align="center">
-  <a href="https://f-droid.org/en/packages/com.yourname.pdftoolkit/">
-    <img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" height="80" alt="Get it on F-Droid">
-  </a>
-  <a href="https://play.google.com/store/apps/details?id=com.yourname.pdftoolkit">
-    <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" height="80" alt="Get it on Google Play">
+  <a href="https://github.com/nikallass/Pdf_Tools/releases/latest">
+    <img src="https://img.shields.io/badge/Download%20APK-GitHub%20Releases-3DDC84?style=for-the-badge&logo=android&logoColor=white" height="40" alt="Download APK">
   </a>
 </p>
 
-### 📥 F-Droid Installation & Benefits
-PDF Toolkit is published on **F-Droid**, the repository of free and open-source Android software:
-- **100% Free & Open Source**: Built using the `fdroid` build flavor with 0 proprietary dependencies or trackers.
-- **Offline Tesseract OCR Engine**: Performs Optical Character Recognition completely on-device without Google Play Services or network connections.
-- **Reproducible & Verified**: Standard F-Droid automated builds compiled from source.
+1. Open the [latest release](https://github.com/nikallass/Pdf_Tools/releases/latest) and download the `.apk`.
+2. Allow installs from your browser or file manager when Android asks.
+3. Open the file and tap **Install**. To update, install the newer APK on top.
 
-**To Install via F-Droid:**
-1. Download the [F-Droid Client App](https://f-droid.org/).
-2. Search for `PDF Toolkit` or open [com.yourname.pdftoolkit on F-Droid](https://f-droid.org/en/packages/com.yourname.pdftoolkit/).
-3. Tap **Install** for automatic updates and verified security.
+The APK is the `opensource` flavor: Tesseract OCR, no Google Play Services, no network permission.
+It is signed with this repository's own key, so it installs alongside, not over, the store version.
 
 > Offline · Privacy-first · No account required
 
 ---
 
-## 🔱 About this fork
+## 🔱 What this build adds
 
-A fork of [Karna14314/Pdf_Tools](https://github.com/Karna14314/Pdf_Tools) with the scanning and
-navigation work below. Everything else is upstream.
+This repository builds on the original PDF Toolkit and adds the scanning and navigation work below.
 
 **Scanner filter, rewritten** — the old colour mode produced a plain photo: grey shadows, ink that
 stayed dark grey. `ScanEnhancer` now estimates the paper colour across the page (a coarse
@@ -185,7 +162,7 @@ All flavors are **privacy-first** with no ads, no analytics, and no proprietary 
 
 ```bash
 # Clone the repository
-git clone https://github.com/Karna14314/Pdf_Tools.git
+git clone https://github.com/nikallass/Pdf_Tools.git
 cd Pdf_Tools
 
 # Play Store flavor (ML Kit OCR)
@@ -204,9 +181,9 @@ cd Pdf_Tools
 
 | Platform | Link | Notes |
 |----------|------|-------|
-| F-Droid | [Get on F-Droid](https://f-droid.org/en/packages/com.yourname.pdftoolkit/) | 100% FOSS, auto-updates |
-| Google Play | [Install](https://play.google.com/store/apps/details?id=com.yourname.pdftoolkit) | Play Store variant, auto-updates |
-| GitHub Releases | [Download APK](https://github.com/Karna14314/Pdf_Tools/releases) | Opensource flavor, manual install |
+| GitHub Releases | [Download APK](https://github.com/nikallass/Pdf_Tools/releases/latest) | Opensource flavor, manual install |
+
+Releases are built and signed by [GitHub Actions](https://github.com/nikallass/Pdf_Tools/actions/workflows/release-apk.yml) from the tagged commit.
 
 ---
 
@@ -222,14 +199,14 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 **Important:** The F-Droid and opensource flavors must remain free of proprietary dependencies. Any new dependencies must be compatible with the F-Droid inclusion policy.
 
-See [open issues](https://github.com/Karna14314/Pdf_Tools/issues) for feature requests and bug reports.
+See [open issues](https://github.com/nikallass/Pdf_Tools/issues) for feature requests and bug reports.
 
 ---
 
 ## 👤 Maintainer
 
-**Narisetti Chaitanya Naidu**  
-GitHub: [@Karna14314](https://github.com/Karna14314)
+This build: [@nikallass](https://github.com/nikallass)  
+Original PDF Toolkit: Narisetti Chaitanya Naidu
 
 ---
 
